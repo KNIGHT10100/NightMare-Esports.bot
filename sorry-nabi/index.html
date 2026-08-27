@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0C0A1C">
+<meta name="description" content="Nabi, maaf kar do na.">
+<!--ARTIFACT-HEAD-->
+<title>Maaf Kar Do Na, Nabi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Karla:wght@400;500;600&display=swap">
+<style>
+  :root{
+    color-scheme: dark;
+    --ink:        #0C0A1C;
+    --night:      #16112F;
+    --night-2:    #241A45;
+    --veil:       rgba(247,231,198,.09);
+    --line:       rgba(247,231,198,.16);
+    --moon:       #F7E7C6;
+    --moon-dim:   #E4D2B0;
+    --muted:      #A79CC6;
+    --marigold:   #F5A524;
+    --ember:      #FF7A3D;
+    --rose:       #E85D8A;
+
+    --step--1: clamp(.78rem, .74rem + .2vw, .86rem);
+    --step-0:  clamp(1rem, .96rem + .25vw, 1.09rem);
+    --step-1:  clamp(1.2rem, 1.1rem + .5vw, 1.4rem);
+    --step-2:  clamp(1.5rem, 1.3rem + 1vw, 1.9rem);
+    --step-3:  clamp(2.3rem, 1.8rem + 2.6vw, 3.4rem);
+
+    --col: 30rem;
+    --pad: clamp(1.25rem, 5vw, 2rem);
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    margin:0;
+    min-height:100%;
+    background:
+      radial-gradient(120% 70% at 50% -10%, var(--night-2) 0%, var(--night) 42%, var(--ink) 100%),
+      var(--ink);
+    background-attachment: fixed;
+    color: var(--moon);
+    font-family:"Karla","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-size: var(--step-0);
+    line-height:1.65;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  #stars{
+    position:fixed; inset:0;
+    width:100%; height:100%;
+    z-index:0; pointer-events:none;
+  }
+  #petals{
+    position:fixed; inset:0;
+    width:100%; height:100%;
+    z-index:60; pointer-events:none;
+  }
+
+  .wrap{
+    position:relative; z-index:1;
+    width:100%;
+    max-width:var(--col);
+    margin-inline:auto;
+    padding:0 var(--pad) 4rem;
+  }
+
+  h1,h2,h3{
+    font-family:"Fraunces","Iowan Old Style",Georgia,serif;
+    font-variation-settings:"SOFT" 70,"WONK" 1;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+    line-height:1.08;
+    letter-spacing:-.015em;
+  }
+
+  p{ margin:0; }
+
+  .eyebrow{
+    font-family:"Karla",sans-serif;
+    font-size:var(--step--1);
+    font-weight:600;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--marigold);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height: 100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:1.5rem;
+    text-align:center;
+    padding: 3rem 0 2.5rem;
+  }
+
+  .moon-btn{
+    appearance:none; border:0; padding:0; margin:0;
+    background:transparent;
+    cursor:pointer;
+    border-radius:50%;
+    line-height:0;
+    transition: transform .5s cubic-bezier(.2,.9,.3,1.4);
+  }
+  .moon-btn:active{ transform:scale(.94); }
+  .moon-btn.wobble{ animation: wobble .7s ease; }
+  @keyframes wobble{
+    0%,100%{ transform:rotate(0) scale(1); }
+    25%{ transform:rotate(-7deg) scale(1.06); }
+    60%{ transform:rotate(6deg) scale(1.03); }
+  }
+
+  .moon{
+    position:relative;
+    width:clamp(84px,26vw,116px);
+    aspect-ratio:1;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 34% 30%, #FFF8E7 0%, var(--moon) 38%, var(--moon-dim) 72%, #C9B489 100%);
+    box-shadow:
+      0 0 0 1px rgba(255,248,231,.35),
+      0 0 34px 6px rgba(245,165,36,.28),
+      0 0 90px 26px rgba(245,165,36,.14),
+      inset -10px -12px 22px rgba(120,96,60,.35);
+  }
+  .moon::before,.moon::after{
+    content:""; position:absolute; border-radius:50%;
+    background: rgba(140,116,78,.22);
+    box-shadow: inset 1px 1px 3px rgba(110,88,55,.4);
+  }
+  .moon::before{ width:19%; aspect-ratio:1; top:26%; left:22%; }
+  .moon::after{ width:12%; aspect-ratio:1; top:57%; left:52%; }
+
+  .moon-hint{
+    font-family:"Caveat",cursive;
+    font-size:1.15rem;
+    color:var(--muted);
+    letter-spacing:.01em;
+  }
+
+  .hero h1{
+    font-size:var(--step-3);
+    font-weight:500;
+    font-variation-settings:"SOFT" 90,"WONK" 1;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--marigold);
+    font-variation-settings:"SOFT" 100,"WONK" 1;
+  }
+  .hero .lede{
+    max-width:26ch;
+    color:var(--moon-dim);
+    font-size:var(--step-1);
+    line-height:1.5;
+  }
+
+  .scroll-cue{
+    margin-top:.5rem;
+    font-size:var(--step--1);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    display:flex; flex-direction:column; align-items:center; gap:.4rem;
+  }
+  .scroll-cue span{
+    display:block; width:1px; height:34px;
+    background:linear-gradient(var(--marigold),transparent);
+    animation: drop 2.4s ease-in-out infinite;
+  }
+  @keyframes drop{ 0%,100%{opacity:.3;transform:scaleY(.5);transform-origin:top} 50%{opacity:1;transform:scaleY(1)} }
+
+  /* ---------- sections ---------- */
+  section + section{ margin-top:4.5rem; }
+
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in{ opacity:1; transform:none; }
+
+  .sec-head{ display:flex; flex-direction:column; gap:.7rem; margin-bottom:1.4rem; }
+  .sec-head h2{ font-size:var(--step-2); }
+
+  .card{
+    background:linear-gradient(160deg, rgba(247,231,198,.07), rgba(247,231,198,.025));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:1.4rem 1.35rem;
+    backdrop-filter: blur(2px);
+  }
+  .card p + p{ margin-top:1rem; }
+  .card .soft{ color:var(--moon-dim); }
+
+  .pull{
+    font-family:"Fraunces",Georgia,serif;
+    font-variation-settings:"SOFT" 90,"WONK" 1;
+    font-style:italic;
+    font-size:var(--step-1);
+    line-height:1.4;
+    color:var(--moon);
+  }
+
+  .promises{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.9rem; }
+  .promises li{
+    display:grid; grid-template-columns:auto 1fr; gap:.85rem; align-items:start;
+    background:rgba(247,231,198,.05);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:1rem 1.05rem;
+  }
+  .promises li::before{
+    content:"";
+    width:9px; height:9px; margin-top:.55rem;
+    border-radius:50%;
+    background:var(--marigold);
+    box-shadow:0 0 0 4px rgba(245,165,36,.16);
+  }
+  .promises strong{ display:block; font-weight:600; }
+  .promises span{ display:block; color:var(--muted); font-size:var(--step--1); line-height:1.55; margin-top:.15rem; }
+
+  /* ---------- nickname garden ---------- */
+  .garden{
+    position:relative;
+    height:clamp(300px,54vh,400px);
+    border-radius:22px;
+    border:1px dashed rgba(245,165,36,.3);
+    background:
+      radial-gradient(80% 60% at 50% 100%, rgba(232,93,138,.13), transparent 70%),
+      rgba(247,231,198,.03);
+    overflow:hidden;
+    touch-action:manipulation;
+    cursor:pointer;
+  }
+  .garden-hint{
+    position:absolute; inset:auto 0 1rem; text-align:center;
+    font-family:"Caveat",cursive; font-size:1.15rem; color:var(--muted);
+    pointer-events:none; transition:opacity .4s ease;
+  }
+  .garden.touched .garden-hint{ opacity:0; }
+
+  .chip{
+    position:absolute;
+    transform:translate(-50%,-50%) scale(.4);
+    opacity:0;
+    padding:.42rem .85rem;
+    border-radius:999px;
+    font-family:"Caveat",cursive;
+    font-size:1.45rem;
+    line-height:1.15;
+    white-space:nowrap;
+    pointer-events:none;
+    border:1px solid currentColor;
+    animation: bloom 3.6s cubic-bezier(.2,.9,.3,1.3) forwards;
+  }
+  .chip .hrt{ font-size:.72em; opacity:.75; margin-left:.28em; }
+  @keyframes bloom{
+    0%{ opacity:0; transform:translate(-50%,-50%) scale(.4) rotate(var(--rot)); }
+    14%{ opacity:1; transform:translate(-50%,-50%) scale(1.08) rotate(var(--rot)); }
+    24%{ transform:translate(-50%,-50%) scale(1) rotate(var(--rot)); }
+    70%{ opacity:1; }
+    100%{ opacity:0; transform:translate(-50%,-90%) scale(.96) rotate(var(--rot)); }
+  }
+  .c-gold{ color:var(--marigold); background:rgba(245,165,36,.13); }
+  .c-rose{ color:var(--rose);     background:rgba(232,93,138,.14); }
+  .c-moon{ color:var(--moon);     background:rgba(247,231,198,.1); }
+  .c-ember{ color:var(--ember);   background:rgba(255,122,61,.13); }
+
+  /* ---------- the ask ---------- */
+  .ask{ text-align:center; }
+  .ask h2{ font-size:var(--step-2); }
+  .ask .q{ margin-top:.8rem; color:var(--moon-dim); }
+
+  .btn-row{
+    margin-top:1.6rem;
+    display:flex; align-items:center; justify-content:center;
+    gap:.9rem; flex-wrap:wrap;
+    position:relative;
+    min-height:60px;
+  }
+
+  .btn{
+    font-family:"Karla",sans-serif;
+    font-size:1.02rem;
+    font-weight:600;
+    letter-spacing:.01em;
+    border-radius:999px;
+    padding:.85rem 1.6rem;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition: transform .18s ease, box-shadow .3s ease, background .3s ease;
+  }
+  .btn:focus-visible{ outline:2px solid var(--moon); outline-offset:3px; }
+
+  .btn-yes{
+    color:#2A1503;
+    background:linear-gradient(135deg, #FFD27A, var(--marigold) 55%, var(--ember));
+    box-shadow:0 6px 26px rgba(245,165,36,.3);
+  }
+  .btn-yes:hover{ transform:translateY(-2px); box-shadow:0 10px 34px rgba(245,165,36,.42); }
+  .btn-yes.grow{ transform:scale(1.06); }
+
+  .btn-no{
+    color:var(--muted);
+    background:transparent;
+    border-color:var(--line);
+  }
+  .btn-no:hover{ color:var(--moon); }
+
+  .no-note{
+    margin-top:1rem; min-height:1.5rem;
+    font-family:"Caveat",cursive; font-size:1.25rem; color:var(--rose);
+    opacity:0; transition:opacity .35s ease;
+  }
+  .no-note.show{ opacity:1; }
+
+  /* ---------- reveal letter ---------- */
+  .letter{
+    margin-top:2rem;
+    display:none;
+  }
+  .letter.open{ display:block; animation: rise .9s cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes rise{ from{opacity:0; transform:translateY(26px)} to{opacity:1; transform:none} }
+
+  .letter .card{
+    border-color:rgba(245,165,36,.4);
+    background:linear-gradient(160deg, rgba(245,165,36,.12), rgba(232,93,138,.07));
+    text-align:left;
+  }
+  .letter h3{ font-size:var(--step-1); margin-bottom:.8rem; }
+  .sign{
+    margin-top:1.2rem;
+    font-family:"Caveat",cursive;
+    font-size:1.5rem;
+    color:var(--marigold);
+    text-align:right;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:4rem;
+    padding-top:1.8rem;
+    border-top:1px solid var(--line);
+    text-align:center;
+    display:flex; flex-direction:column; align-items:center; gap:1rem;
+  }
+  footer .fine{ color:var(--muted); font-size:var(--step--1); }
+  .share{
+    font-family:"Karla",sans-serif; font-size:var(--step--1); font-weight:600;
+    letter-spacing:.06em; text-transform:uppercase;
+    color:var(--moon-dim); background:transparent;
+    border:1px solid var(--line); border-radius:999px;
+    padding:.6rem 1.2rem; cursor:pointer;
+    transition:border-color .3s ease, color .3s ease;
+  }
+  .share:hover{ color:var(--marigold); border-color:rgba(245,165,36,.5); }
+  .share:focus-visible{ outline:2px solid var(--moon); outline-offset:3px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.001ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:.001ms !important;
+    }
+    .reveal{ opacity:1; transform:none; }
+    .chip{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+  }
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<canvas id="petals" aria-hidden="true"></canvas>
+<!--ARTIFACT-START-->
+<main class="wrap">
+
+  <header class="hero">
+    <button class="moon-btn" id="moonBtn" type="button" aria-label="Tap the moon for a nickname">
+      <span class="moon" aria-hidden="true"></span>
+    </button>
+    <p class="moon-hint">tap the chaand&nbsp;🌙</p>
+
+    <p class="eyebrow">For Nabi</p>
+    <h1>Maaf kar do <em>na</em>&hairsp;…</h1>
+    <p class="lede">I messed up. Main safai nahi dene aaya — bas poori baat bolne aaya hoon.</p>
+
+    <p class="scroll-cue">scroll <span aria-hidden="true"></span></p>
+  </header>
+
+  <section class="reveal">
+    <div class="sec-head">
+      <p class="eyebrow">Jo hua</p>
+      <h2>I'm not going to soften it.</h2>
+    </div>
+    <div class="card">
+      <p>I commented on another girl's Instagram post. It wasn't an accident and my phone didn't do it by itself — I typed it and I pressed post.</p>
+      <p class="soft">And I know exactly what it did to you. You opened your phone and saw me handing my attention to someone else, like yours was something I could spend anywhere. That's a horrible feeling and I put it in you.</p>
+      <p class="pull">You didn't overreact. You reacted correctly. Galti sirf meri hai.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-head">
+      <p class="eyebrow">Ab se</p>
+      <h2>Three things, and I mean them.</h2>
+    </div>
+    <ul class="promises">
+      <li>
+        <div>
+          <strong>No comments. No likes. No DMs.</strong>
+          <span>Not the "harmless" ones either. If it would make you feel small to see it, I don't do it. Simple.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>My phone is yours whenever you want it.</strong>
+          <span>No passcode games, no deleting anything before I hand it over. You should never have to go looking.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>When you say something hurt, I listen the first time.</strong>
+          <span>No "it wasn't like that", no making you prove it. Tum bolo, main sunta hoon — argue baad mein, pehle sunna.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="reveal">
+    <div class="sec-head">
+      <p class="eyebrow">Tumhare naam</p>
+      <h2>Every name I have for you.</h2>
+      <p class="soft" style="color:var(--muted)">Tap anywhere in here. They keep coming — because I'm not running out of them, and I'm not running out of you.</p>
+    </div>
+    <div class="garden" id="garden" role="button" tabindex="0" aria-label="Tap to show a pet name">
+      <p class="garden-hint">tap me 👆</p>
+    </div>
+  </section>
+
+  <section class="reveal ask">
+    <p class="eyebrow">Toh ab</p>
+    <h2>Maaf kiya?</h2>
+    <p class="q">Koi pressure nahi. Bas sach bol dena.</p>
+
+    <div class="btn-row" id="btnRow">
+      <button class="btn btn-yes" id="yesBtn" type="button">Haan, maaf kiya 🤍</button>
+      <button class="btn btn-no" id="noBtn" type="button">Abhi nahi 😤</button>
+    </div>
+    <p class="no-note" id="noNote" role="status"></p>
+
+    <div class="letter" id="letter">
+      <div class="card">
+        <h3>Thank you, Zulfika. 🤍</h3>
+        <p>Tumne mujhe maaf kiya, aur main isko halke mein nahi lunga. Forgiveness isn't a reset button — it's you giving me one more chance to be the person you already believed I was.</p>
+        <p class="soft">From today: tumhari respect pehle, hamesha. Not because you caught me. Because you're the best thing I have, and I'd be an idiot to keep testing that.</p>
+        <p class="sign">— tumhara gadhu 🌙</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="fine">Made at 2am by someone who couldn't sleep until you read this.</p>
+    <button class="share" id="shareBtn" type="button">Send this to her</button>
+  </footer>
+
+</main>
+<!--ARTIFACT-END-->
+<script>
+(function(){
+  "use strict";
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var NAMES = [
+    "Zulfika","Ful Fuli","Buchru","Gadhu","Nabi Baby","Motu","Pagli",
+    "Jaan","Bandor","Sona","Chand","Moti","Laddu","Bhalu","Golu",
+    "Cutu","Meri jaan","Bhutni","Chotu","Shona bou","Mishti","Puchku",
+    "Guddu","Rasgulla","Bili","Chuchu","Meri Nabi"
+  ];
+  var TONES = ["c-gold","c-rose","c-moon","c-ember"];
+  var bag = [];
+
+  function nextName(){
+    if(!bag.length){
+      bag = NAMES.slice();
+      for(var i=bag.length-1;i>0;i--){
+        var j = Math.floor(Math.random()*(i+1));
+        var t = bag[i]; bag[i]=bag[j]; bag[j]=t;
+      }
+    }
+    return bag.pop();
+  }
+
+  function popChip(host, x, y){
+    var el = document.createElement("span");
+    el.className = "chip " + TONES[Math.floor(Math.random()*TONES.length)];
+    el.style.left = x + "px";
+    el.style.top  = y + "px";
+    el.style.setProperty("--rot", (Math.random()*16 - 8).toFixed(1) + "deg");
+    el.innerHTML = "";
+    el.appendChild(document.createTextNode(nextName()));
+    var h = document.createElement("span");
+    h.className = "hrt";
+    h.textContent = "🤍";
+    el.appendChild(h);
+    host.appendChild(el);
+    window.setTimeout(function(){ el.remove(); }, reduce ? 2200 : 3700);
+  }
+
+  /* ---- nickname garden ---- */
+  var garden = document.getElementById("garden");
+
+  function randomSpot(){
+    var r = garden.getBoundingClientRect();
+    return {
+      x: 70 + Math.random() * Math.max(20, r.width - 140),
+      y: 44 + Math.random() * Math.max(20, r.height - 110)
+    };
+  }
+
+  function spawnRandom(){
+    var p = randomSpot();
+    popChip(garden, p.x, p.y);
+  }
+
+  garden.addEventListener("pointerdown", function(e){
+    garden.classList.add("touched");
+    var r = garden.getBoundingClientRect();
+    popChip(garden, e.clientX - r.left, e.clientY - r.top);
+  });
+  garden.addEventListener("keydown", function(e){
+    if(e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      garden.classList.add("touched");
+      spawnRandom();
+    }
+  });
+
+  var gardenTimer = null;
+  if(!reduce && "IntersectionObserver" in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting && !gardenTimer){
+          spawnRandom();
+          gardenTimer = window.setInterval(spawnRandom, 1100);
+        } else if(!en.isIntersecting && gardenTimer){
+          window.clearInterval(gardenTimer);
+          gardenTimer = null;
+        }
+      });
+    }, { threshold: .3 }).observe(garden);
+  } else {
+    spawnRandom();
+  }
+
+  /* ---- moon ---- */
+  var moonBtn = document.getElementById("moonBtn");
+  moonBtn.addEventListener("click", function(){
+    moonBtn.classList.remove("wobble");
+    void moonBtn.offsetWidth;
+    moonBtn.classList.add("wobble");
+    var r = moonBtn.getBoundingClientRect();
+    var host = document.body;
+    var el = document.createElement("span");
+    el.className = "chip " + TONES[Math.floor(Math.random()*TONES.length)];
+    el.style.position = "fixed";
+    el.style.zIndex = "50";
+    el.style.left = (r.left + r.width/2 + (Math.random()*90 - 45)) + "px";
+    el.style.top  = (r.top - 14) + "px";
+    el.style.setProperty("--rot", (Math.random()*16 - 8).toFixed(1) + "deg");
+    el.appendChild(document.createTextNode(nextName()));
+    var h = document.createElement("span"); h.className="hrt"; h.textContent="🤍";
+    el.appendChild(h);
+    host.appendChild(el);
+    window.setTimeout(function(){ el.remove(); }, reduce ? 2200 : 3700);
+  });
+
+  /* ---- scroll reveals ---- */
+  var revealables = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window){
+    var ro = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add("in"); ro.unobserve(en.target); }
+      });
+    }, { threshold:.12, rootMargin:"0px 0px -8% 0px" });
+    revealables.forEach(function(n){ ro.observe(n); });
+  } else {
+    revealables.forEach(function(n){ n.classList.add("in"); });
+  }
+
+  /* ---- the ask ---- */
+  var yesBtn = document.getElementById("yesBtn");
+  var noBtn  = document.getElementById("noBtn");
+  var noNote = document.getElementById("noNote");
+  var letter = document.getElementById("letter");
+
+  var dodges = 0;
+  var DODGE_LINES = [
+    "arre suno na… ek baar aur socho 🥺",
+    "okay okay… par main sach mein sorry hoon.",
+    "last try: main roz sorry bolunga, promise."
+  ];
+
+  noBtn.addEventListener("click", function(){
+    if(dodges < DODGE_LINES.length){
+      noNote.textContent = DODGE_LINES[dodges];
+      noNote.classList.add("show");
+      dodges++;
+      var dx = (Math.random()*70 - 35);
+      var dy = (Math.random()*26 - 13);
+      noBtn.style.transform = "translate(" + dx + "px," + dy + "px) scale(" + (1 - dodges*0.1) + ")";
+      yesBtn.classList.add("grow");
+      window.setTimeout(function(){ yesBtn.classList.remove("grow"); }, 260);
+      return;
+    }
+    noNote.textContent = "That's fair. Main wait karunga — jab tak tum ready na ho. 🤍";
+    noNote.classList.add("show");
+    noBtn.disabled = true;
+    noBtn.style.opacity = ".35";
+    noBtn.style.cursor = "default";
+  });
+
+  yesBtn.addEventListener("click", function(){
+    letter.classList.add("open");
+    noNote.classList.remove("show");
+    noBtn.style.display = "none";
+    yesBtn.disabled = true;
+    yesBtn.textContent = "Thank you, jaan 🤍";
+    yesBtn.style.cursor = "default";
+    burst();
+    window.setTimeout(function(){
+      letter.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block:"center" });
+    }, 420);
+  });
+
+  /* ---- share ---- */
+  var shareBtn = document.getElementById("shareBtn");
+  shareBtn.addEventListener("click", function(){
+    var data = {
+      title: "Maaf kar do na, Nabi",
+      text: "Nabi, ye tumhare liye hai. Please poora padhna. 🤍",
+      url: window.location.href
+    };
+    if(navigator.share){
+      navigator.share(data).catch(function(){});
+      return;
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(window.location.href).then(function(){
+        shareBtn.textContent = "Link copied 🤍";
+        window.setTimeout(function(){ shareBtn.textContent = "Send this to her"; }, 2200);
+      }).catch(function(){
+        shareBtn.textContent = "Copy the link from your address bar";
+      });
+      return;
+    }
+    shareBtn.textContent = "Copy the link from your address bar";
+  });
+
+  /* ---- starfield ---- */
+  var sky = document.getElementById("stars");
+  var sctx = sky.getContext("2d");
+  var stars = [], dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function sizeSky(){
+    var w = window.innerWidth, h = window.innerHeight;
+    sky.width = w * dpr; sky.height = h * dpr;
+    sctx.setTransform(dpr,0,0,dpr,0,0);
+    var count = Math.round((w * h) / 9000);
+    stars = [];
+    for(var i=0;i<count;i++){
+      stars.push({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        r: Math.random()*1.25 + .25,
+        a: Math.random()*.6 + .2,
+        s: Math.random()*.012 + .004,
+        p: Math.random()*Math.PI*2,
+        warm: Math.random() < .18
+      });
+    }
+  }
+
+  function drawSky(t){
+    var w = window.innerWidth, h = window.innerHeight;
+    sctx.clearRect(0,0,w,h);
+    for(var i=0;i<stars.length;i++){
+      var st = stars[i];
+      var tw = reduce ? st.a : st.a * (0.55 + 0.45 * Math.sin(t*st.s + st.p));
+      sctx.beginPath();
+      sctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
+      sctx.fillStyle = st.warm
+        ? "rgba(245,165,36," + tw.toFixed(3) + ")"
+        : "rgba(247,231,198," + tw.toFixed(3) + ")";
+      sctx.fill();
+    }
+    if(!reduce) window.requestAnimationFrame(drawSky);
+  }
+
+  sizeSky();
+  if(reduce){ drawSky(0); } else { window.requestAnimationFrame(drawSky); }
+
+  var resizeT;
+  window.addEventListener("resize", function(){
+    window.clearTimeout(resizeT);
+    resizeT = window.setTimeout(function(){
+      sizeSky();
+      if(reduce) drawSky(0);
+      sizePetals();
+    }, 180);
+  });
+
+  /* ---- petal burst ---- */
+  var pc = document.getElementById("petals");
+  var pctx = pc.getContext("2d");
+  var bits = [], raf = null;
+  var PETAL_COLORS = ["#F5A524","#FF7A3D","#E85D8A","#F7E7C6","#FFD27A"];
+
+  function sizePetals(){
+    pc.width = window.innerWidth * dpr;
+    pc.height = window.innerHeight * dpr;
+    pctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  sizePetals();
+
+  function burst(){
+    if(reduce) return;
+    var w = window.innerWidth, h = window.innerHeight;
+    bits = [];
+    for(var i=0;i<110;i++){
+      bits.push({
+        x: Math.random()*w,
+        y: -20 - Math.random()*h*0.5,
+        vx: (Math.random()-.5)*1.2,
+        vy: 1.6 + Math.random()*2.6,
+        rw: 4 + Math.random()*6,
+        rh: 7 + Math.random()*9,
+        rot: Math.random()*Math.PI*2,
+        vr: (Math.random()-.5)*0.12,
+        c: PETAL_COLORS[Math.floor(Math.random()*PETAL_COLORS.length)],
+        life: 1
+      });
+    }
+    if(!raf) raf = window.requestAnimationFrame(stepPetals);
+  }
+
+  function stepPetals(){
+    var w = window.innerWidth, h = window.innerHeight;
+    pctx.clearRect(0,0,w,h);
+    var alive = 0;
+    for(var i=0;i<bits.length;i++){
+      var b = bits[i];
+      b.x += b.vx + Math.sin((b.y + b.rot*40)/60) * 0.7;
+      b.y += b.vy;
+      b.rot += b.vr;
+      if(b.y > h * 0.72) b.life -= 0.012;
+      if(b.life <= 0) continue;
+      alive++;
+      pctx.save();
+      pctx.translate(b.x, b.y);
+      pctx.rotate(b.rot);
+      pctx.globalAlpha = Math.max(0, b.life);
+      pctx.fillStyle = b.c;
+      pctx.beginPath();
+      pctx.ellipse(0, 0, b.rw, b.rh, 0, 0, Math.PI*2);
+      pctx.fill();
+      pctx.restore();
+    }
+    if(alive > 0){
+      raf = window.requestAnimationFrame(stepPetals);
+    } else {
+      pctx.clearRect(0,0,w,h);
+      raf = null;
+    }
+  }
+})();
+</script>
+</body>
+</html>
