@@ -53,16 +53,36 @@
     -webkit-font-smoothing:antialiased;
   }
 
+  /* ---------------- ambient layers ---------------- */
+  .aurora{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .aurora span{
+    position:absolute; display:block;
+    width:78vmax; height:78vmax; border-radius:50%;
+    opacity:.4;
+  }
+  .aurora .a1{
+    top:-34vmax; left:-24vmax;
+    background:radial-gradient(circle, rgba(255,143,177,.20), transparent 62%);
+    animation:float1 26s ease-in-out infinite;
+  }
+  .aurora .a2{
+    bottom:-40vmax; right:-28vmax;
+    background:radial-gradient(circle, rgba(255,196,107,.16), transparent 62%);
+    animation:float2 32s ease-in-out infinite;
+  }
+  @keyframes float1{ 0%,100%{transform:translate(0,0)} 50%{transform:translate(9vmax,7vmax)} }
+  @keyframes float2{ 0%,100%{transform:translate(0,0)} 50%{transform:translate(-8vmax,-6vmax)} }
+
   #sky, #petals{
     position:fixed; inset:0;
     width:100%; height:100%;
     pointer-events:none;
   }
-  #sky{ z-index:0; }
+  #sky{ z-index:1; }
   #petals{ z-index:60; }
 
   .wrap{
-    position:relative; z-index:1;
+    position:relative; z-index:2;
     width:100%; max-width:var(--col);
     margin-inline:auto;
     padding:0 var(--pad) 4rem;
@@ -129,39 +149,28 @@
 
   .moon::before,.moon::after{
     content:""; position:absolute; border-radius:50%;
-    background:rgba(255,143,177,.28);
+    background:rgba(255,143,177,.3);
+    filter:blur(3px);
   }
-  /* blush cheeks */
-  .moon::before{ width:17%; aspect-ratio:1; top:52%; left:17%; filter:blur(3px); }
-  .moon::after{  width:17%; aspect-ratio:1; top:52%; right:17%; filter:blur(3px); }
+  .moon::before{ width:17%; aspect-ratio:1; top:52%; left:17%; }
+  .moon::after{  width:17%; aspect-ratio:1; top:52%; right:17%; }
 
-  .moon-hint{
-    font-family:"Caveat",cursive;
-    font-size:1.2rem;
-    color:var(--muted);
-  }
+  .moon-hint{ font-family:"Caveat",cursive; font-size:1.2rem; color:var(--muted); }
 
   .hero h1{
     font-size:var(--step-3);
     font-weight:500;
     font-variation-settings:"SOFT" 100,"WONK" 1;
   }
-  .hero h1 em{
-    font-style:italic;
-    color:var(--rose);
-  }
+  .hero h1 em{ font-style:italic; color:var(--rose); }
   .hero .lede{
-    max-width:24ch;
-    color:var(--moon-dim);
-    font-size:var(--step-1);
-    line-height:1.5;
+    max-width:24ch; color:var(--moon-dim);
+    font-size:var(--step-1); line-height:1.5;
   }
 
   .scroll-cue{
     margin-top:.4rem;
-    font-family:"Caveat",cursive;
-    font-size:1.1rem;
-    color:var(--muted);
+    font-family:"Caveat",cursive; font-size:1.1rem; color:var(--muted);
     display:flex; flex-direction:column; align-items:center; gap:.35rem;
   }
   .scroll-cue span{
@@ -179,15 +188,26 @@
 
   .sec-head{ display:flex; flex-direction:column; gap:.65rem; margin-bottom:1.4rem; }
   .sec-head h2{ font-size:var(--step-2); }
-  .sec-head .sub{ color:var(--muted); font-size:var(--step--1); line-height:1.6; }
+
+  /* soft gradient ring, shared */
+  .ring{ position:relative; }
+  .ring::before{
+    content:""; position:absolute; inset:0;
+    border-radius:inherit; padding:1px;
+    background:linear-gradient(150deg, rgba(255,196,107,.55), rgba(255,143,177,.45) 55%, rgba(251,238,218,.18));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+            mask-composite:exclude;
+    pointer-events:none;
+    z-index:4;
+  }
 
   .card{
-    position:relative;
     background:linear-gradient(158deg, rgba(251,238,218,.085), rgba(251,238,218,.03));
-    border:1px solid var(--line);
-    border-radius:26px;
-    padding:1.5rem 1.4rem;
-    box-shadow: inset 0 1px 0 rgba(255,252,243,.14), 0 18px 40px -30px rgba(0,0,0,.9);
+    border-radius:28px;
+    padding:1.55rem 1.4rem;
+    box-shadow: inset 0 1px 0 rgba(255,252,243,.12), 0 26px 50px -38px rgba(255,143,177,.5);
   }
   .card p + p{ margin-top:1rem; }
   .card .soft{ color:var(--moon-dim); }
@@ -196,21 +216,15 @@
     font-family:"Fraunces",Georgia,serif;
     font-variation-settings:"SOFT" 100,"WONK" 1;
     font-style:italic;
-    font-size:var(--step-1);
-    line-height:1.42;
+    font-size:var(--step-1); line-height:1.42;
     color:var(--rose);
   }
 
-  .hand{
-    font-family:"Caveat",cursive;
-    font-size:1.5rem;
-    line-height:1.45;
-    color:var(--moon);
-  }
+  .hand{ font-family:"Caveat",cursive; font-size:1.5rem; line-height:1.45; color:var(--moon); }
 
   .heart-rule{
     display:flex; align-items:center; gap:.75rem;
-    color:rgba(255,143,177,.5);
+    color:rgba(255,143,177,.55);
     margin:2.6rem 0;
   }
   .heart-rule::before,.heart-rule::after{
@@ -219,18 +233,17 @@
   }
 
   /* ---------------- little notes ---------------- */
-  .chits{ display:flex; flex-direction:column; gap:1rem; }
+  .chits{ display:flex; flex-direction:column; gap:1.05rem; }
   .chit{
     position:relative;
     font-family:"Caveat",cursive;
-    font-size:1.4rem;
-    line-height:1.4;
+    font-size:1.4rem; line-height:1.4;
     color:var(--moon);
     background:linear-gradient(150deg, rgba(255,196,107,.14), rgba(255,143,177,.09));
     border:1px solid rgba(255,196,107,.28);
     border-radius:20px;
     padding:1.15rem 1.25rem .95rem;
-    box-shadow:0 14px 30px -26px rgba(0,0,0,.95);
+    box-shadow:0 16px 32px -28px rgba(0,0,0,.95);
   }
   .chit:nth-child(odd){ transform:rotate(-1.1deg); }
   .chit:nth-child(even){ transform:rotate(1deg); }
@@ -247,35 +260,53 @@
   /* ---------------- nickname garden ---------------- */
   .garden{
     position:relative;
-    height:clamp(300px,54vh,400px);
-    border-radius:26px;
-    border:1px dashed rgba(255,143,177,.35);
-    background:
-      radial-gradient(80% 62% at 50% 100%, rgba(255,143,177,.16), transparent 72%),
-      rgba(251,238,218,.03);
+    height:clamp(320px,58vh,430px);
+    border-radius:34px;
     overflow:hidden;
+    isolation:isolate;
     touch-action:manipulation;
     cursor:pointer;
+    background:
+      radial-gradient(72% 55% at 50% 104%, rgba(255,143,177,.22), transparent 72%),
+      radial-gradient(58% 45% at 18% 6%,   rgba(255,196,107,.16), transparent 72%),
+      linear-gradient(158deg, rgba(251,238,218,.07), rgba(251,238,218,.02));
+    box-shadow:
+      inset 0 1px 0 rgba(255,252,243,.16),
+      0 34px 64px -44px rgba(255,143,177,.75);
   }
-  .garden:focus-visible{ outline:2px solid var(--gold); outline-offset:4px; }
+  .garden:focus-visible{ outline:2px solid var(--gold); outline-offset:5px; }
+
+  /* slow drifting inner glow */
+  .garden::after{
+    content:""; position:absolute; inset:-30%;
+    z-index:0; pointer-events:none;
+    background:
+      radial-gradient(28% 28% at 30% 40%, rgba(255,143,177,.22), transparent 70%),
+      radial-gradient(24% 24% at 72% 62%, rgba(255,196,107,.18), transparent 70%);
+    animation: swirl 22s ease-in-out infinite;
+  }
+  @keyframes swirl{
+    0%,100%{ transform:translate(0,0) rotate(0deg) }
+    50%    { transform:translate(4%, -4%) rotate(12deg) }
+  }
+
   .garden-hint{
-    position:absolute; inset:auto 0 1.1rem; text-align:center;
-    font-family:"Caveat",cursive; font-size:1.2rem; color:var(--muted);
+    position:absolute; inset:auto 0 1.2rem; text-align:center;
+    z-index:1;
+    font-family:"Caveat",cursive; font-size:1.25rem; color:var(--muted);
     pointer-events:none; transition:opacity .4s ease;
   }
   .garden.touched .garden-hint{ opacity:0; }
 
   .chip{
-    position:absolute;
+    position:absolute; z-index:2;
     transform:translate(-50%,-50%) scale(.4);
     opacity:0;
     padding:.45rem .9rem;
     border-radius:999px;
     font-family:"Caveat",cursive;
-    font-size:1.5rem;
-    line-height:1.15;
-    white-space:nowrap;
-    pointer-events:none;
+    font-size:1.5rem; line-height:1.15;
+    white-space:nowrap; pointer-events:none;
     border:1px solid currentColor;
     animation:bloom 3.7s cubic-bezier(.2,.9,.3,1.3) forwards;
   }
@@ -287,10 +318,10 @@
     70%{  opacity:1; }
     100%{ opacity:0; transform:translate(-50%,-92%) scale(.96) rotate(var(--rot)); }
   }
-  .c-gold{ color:var(--gold);  background:rgba(255,196,107,.14); }
-  .c-rose{ color:var(--rose);  background:rgba(255,143,177,.15); }
+  .c-gold{ color:var(--gold);  background:rgba(255,196,107,.15); }
+  .c-rose{ color:var(--rose);  background:rgba(255,143,177,.16); }
   .c-moon{ color:var(--moon);  background:rgba(251,238,218,.1); }
-  .c-peach{color:var(--peach); background:rgba(255,154,122,.14); }
+  .c-peach{color:var(--peach); background:rgba(255,154,122,.15); }
 
   /* ---------------- the ask ---------------- */
   .ask{ text-align:center; }
@@ -310,7 +341,7 @@
     padding:.9rem 1.65rem;
     border:1px solid transparent;
     cursor:pointer;
-    transition:transform .2s ease, box-shadow .3s ease, opacity .3s ease;
+    transition:transform .28s cubic-bezier(.2,.9,.3,1.4), box-shadow .3s ease, opacity .3s ease;
   }
   .btn:focus-visible{ outline:2px solid var(--moon); outline-offset:3px; }
 
@@ -320,18 +351,111 @@
     box-shadow:0 8px 30px -8px rgba(255,143,177,.55);
     animation:beat 2.6s ease-in-out infinite;
   }
-  @keyframes beat{ 0%,100%{ transform:scale(1) } 46%{ transform:scale(1.035) } 54%{ transform:scale(1.02) } }
-  .btn-yes:hover{ box-shadow:0 12px 38px -8px rgba(255,143,177,.7); }
+  @keyframes beat{ 0%,100%{ transform:scale(1) } 46%{ transform:scale(1.04) } 54%{ transform:scale(1.02) } }
+  .btn-yes:hover{ box-shadow:0 12px 38px -8px rgba(255,143,177,.72); }
 
   .btn-no{ color:var(--muted); background:transparent; border-color:var(--line); }
   .btn-no:hover{ color:var(--moon); }
 
   .no-note{
-    margin-top:1.1rem; min-height:1.6rem;
-    font-family:"Caveat",cursive; font-size:1.3rem; color:var(--rose);
+    margin-top:1.15rem; min-height:2.2rem;
+    font-family:"Caveat",cursive; font-size:1.35rem; color:var(--rose);
     opacity:0; transition:opacity .35s ease;
   }
-  .no-note.show{ opacity:1; }
+  .no-note.show{ opacity:1; animation:nudge .5s ease; }
+  @keyframes nudge{ 0%{transform:translateY(6px)} 100%{transform:none} }
+
+  /* ---------------- hug ---------------- */
+  .hug{
+    position:fixed; inset:0; z-index:70;
+    display:none; place-items:center;
+    pointer-events:none;
+  }
+  .hug.play{ display:grid; }
+
+  .hug-scrim{
+    position:absolute; inset:0;
+    background:radial-gradient(60% 50% at 50% 50%, rgba(255,143,177,.3), rgba(18,12,33,.86) 78%);
+    animation:scrim 3.6s ease-in-out forwards;
+  }
+  @keyframes scrim{ 0%{opacity:0} 14%{opacity:1} 82%{opacity:1} 100%{opacity:0} }
+
+  .hug-stage{
+    position:relative;
+    width:min(80vmin,430px); aspect-ratio:1;
+    display:grid; place-items:center;
+  }
+  .arc{
+    position:absolute; inset:0;
+    border-radius:50%;
+    border:min(6.5vmin,34px) solid transparent;
+    filter:drop-shadow(0 0 22px rgba(255,143,177,.5));
+  }
+  .arc-l{
+    border-left-color:var(--rose);
+    border-top-color:var(--rose);
+    animation:armL 3.6s cubic-bezier(.25,.8,.3,1) forwards;
+  }
+  .arc-r{
+    border-right-color:var(--gold);
+    border-bottom-color:var(--gold);
+    animation:armR 3.6s cubic-bezier(.25,.8,.3,1) forwards;
+  }
+  @keyframes armL{
+    0%  { transform:translateX(-92vw) rotate(-45deg); opacity:0 }
+    18% { opacity:1 }
+    42% { transform:translateX(0) rotate(-45deg) }
+    54% { transform:translateX(3%) scale(.94) rotate(-45deg) }
+    64% { transform:translateX(0) scale(1) rotate(-45deg) }
+    74% { transform:translateX(3%) scale(.94) rotate(-45deg) }
+    84% { transform:translateX(0) scale(1) rotate(-45deg); opacity:1 }
+    100%{ transform:translateX(0) scale(1.18) rotate(-45deg); opacity:0 }
+  }
+  @keyframes armR{
+    0%  { transform:translateX(92vw) rotate(-45deg); opacity:0 }
+    18% { opacity:1 }
+    42% { transform:translateX(0) rotate(-45deg) }
+    54% { transform:translateX(-3%) scale(.94) rotate(-45deg) }
+    64% { transform:translateX(0) scale(1) rotate(-45deg) }
+    74% { transform:translateX(-3%) scale(.94) rotate(-45deg) }
+    84% { transform:translateX(0) scale(1) rotate(-45deg); opacity:1 }
+    100%{ transform:translateX(0) scale(1.18) rotate(-45deg); opacity:0 }
+  }
+
+  .hug-core{
+    position:relative;
+    font-size:min(22vmin,120px);
+    line-height:1;
+    filter:drop-shadow(0 0 30px rgba(255,143,177,.75));
+    animation:core 3.6s cubic-bezier(.25,.8,.3,1) forwards;
+  }
+  @keyframes core{
+    0%  { transform:scale(0); opacity:0 }
+    16% { transform:scale(1.18); opacity:1 }
+    26% { transform:scale(1) }
+    54% { transform:scale(.8) }
+    64% { transform:scale(1.05) }
+    74% { transform:scale(.82) }
+    84% { transform:scale(1.12) }
+    100%{ transform:scale(1.7); opacity:0 }
+  }
+
+  .hug-text{
+    position:absolute; left:0; right:0;
+    bottom:14vh; text-align:center;
+    font-family:"Caveat",cursive;
+    font-size:clamp(2rem,9vw,3.2rem);
+    color:var(--moon);
+    text-shadow:0 0 26px rgba(255,143,177,.7);
+    opacity:0;
+    animation:hugtext 3.6s ease forwards;
+  }
+  @keyframes hugtext{
+    0%,40%{ opacity:0; transform:translateY(14px) }
+    56%   { opacity:1; transform:none }
+    86%   { opacity:1 }
+    100%  { opacity:0 }
+  }
 
   /* ---------------- letter ---------------- */
   .letter{ margin-top:2rem; display:none; }
@@ -339,17 +463,14 @@
   @keyframes rise{ from{opacity:0; transform:translateY(26px)} to{opacity:1; transform:none} }
 
   .letter .card{
-    border-color:rgba(255,143,177,.42);
-    background:linear-gradient(158deg, rgba(255,196,107,.15), rgba(255,143,177,.1));
+    background:linear-gradient(158deg, rgba(255,196,107,.16), rgba(255,143,177,.11));
     text-align:left;
   }
   .letter h3{ font-size:var(--step-1); margin-bottom:.85rem; }
   .sign{
     margin-top:1.3rem;
-    font-family:"Caveat",cursive;
-    font-size:1.75rem;
-    color:var(--gold);
-    text-align:right;
+    font-family:"Caveat",cursive; font-size:1.8rem;
+    color:var(--gold); text-align:right;
   }
 
   /* ---------------- footer ---------------- */
@@ -383,6 +504,7 @@
 </style>
 </head>
 <body>
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span></div>
 <canvas id="sky" aria-hidden="true"></canvas>
 <canvas id="petals" aria-hidden="true"></canvas>
 <!--ARTIFACT-START-->
@@ -406,7 +528,7 @@
       <p class="eyebrow">sach bolun toh</p>
       <h2>Meri galti thi.</h2>
     </div>
-    <div class="card">
+    <div class="card ring">
       <p>Maine ek ladki ke post pe comment kiya. Mere liye woh do second ki baat thi — par tumne dekha, aur tumhe dukh hua. Aur ab mujhe sirf wahi dikh raha hai.</p>
       <p class="soft">Jab tumne pucha, mera pehla reaction khud ko bachana tha. "Aisa kuch nahi hai", "tum galat samajh rahi ho". Woh sabse bura part tha. Tumhe apni feeling prove karni padi — aur wo tumhe kabhi nahi karni chahiye.</p>
       <p class="pull">Tum overreact nahi kar rahi thi. Main hi bewakoof tha.</p>
@@ -418,7 +540,7 @@
       <p class="eyebrow">ab kya</p>
       <h2>Main koi lambi list nahi banaunga.</h2>
     </div>
-    <div class="card">
+    <div class="card ring">
       <p>"Ye nahi karunga, wo nahi karunga" — bolna sabse easy cheez hai, aur tum ye sab pehle bhi sun chuki ho. Main tumhe promise ki list nahi dena chahta.</p>
       <p class="hand">Main bas itna chahta hoon ki tumhe dubara ye feel na ho ki tum kisi se compete kar rahi ho. Kabhi bhi. Kisi se bhi.</p>
       <p class="soft">Aur agar kabhi maine phir se kuch aisa kiya jo tumhe chubhe — toh main bahana nahi banaunga. Main pehle sun'unga. Ye wala part main sach mein badal raha hoon.</p>
@@ -443,10 +565,8 @@
   <section class="reveal">
     <div class="sec-head">
       <p class="eyebrow">tumhare naam</p>
-      <h2>Jitne naam hain tumhare.</h2>
-      <p class="sub">Yahan kahin bhi touch karo. Ye khatam nahi honge — kyunki tum bhi kabhi purani nahi hoti.</p>
     </div>
-    <div class="garden" id="garden" role="button" tabindex="0" aria-label="Tap to show a pet name">
+    <div class="garden ring" id="garden" role="button" tabindex="0" aria-label="Tap to show a pet name">
       <p class="garden-hint">yahan tap karo 👆</p>
     </div>
   </section>
@@ -463,7 +583,7 @@
     <p class="no-note" id="noNote" role="status"></p>
 
     <div class="letter" id="letter">
-      <div class="card">
+      <div class="card ring">
         <h3>Thank you, Zulfika 💗</h3>
         <p>Tumne itni aasani se maaf kar diya, aur mujhe pata hai ki ye aasan nahi tha. Main isko halke mein nahi lunga.</p>
         <p class="hand">Tum meri sabse achhi cheez ho. Ab se main aisa kuch nahi karunga jisse tumhe khud se ye poochna pade ki tum enough ho ya nahi. Tum ho. Tum hamesha thi.</p>
@@ -478,6 +598,16 @@
   </footer>
 
 </main>
+
+<div class="hug" id="hug" aria-hidden="true">
+  <div class="hug-scrim"></div>
+  <div class="hug-stage">
+    <span class="arc arc-l"></span>
+    <span class="arc arc-r"></span>
+    <span class="hug-core">💗</span>
+  </div>
+  <p class="hug-text">jhappi de do! 🤗</p>
+</div>
 <!--ARTIFACT-END-->
 <script>
 (function(){
@@ -485,6 +615,7 @@
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var forgiven = false;
 
   var NAMES = [
     "Zulfika","Ful Fuli","Buchru","Gadhu","Nabi Baby","Motu","Pagli",
@@ -596,48 +727,92 @@
     revealables.forEach(function(n){ n.classList.add("in"); });
   }
 
-  /* ---- the ask ---- */
+  /* ---- the ask: keeps asking until she says haan ---- */
   var yesBtn = document.getElementById("yesBtn");
   var noBtn  = document.getElementById("noBtn");
   var noNote = document.getElementById("noNote");
   var letter = document.getElementById("letter");
+  var askSec = document.querySelector(".ask");
 
-  var dodges = 0;
-  var DODGE_LINES = [
+  var PLEAS = [
     "arre suno na… ek baar aur soch lo 🥺",
-    "okay… par main sach mein sorry hoon.",
-    "last time puchh raha hoon, promise."
+    "maaf kar do na shonaa 🥺",
+    "please jaan… main sach mein sorry hoon",
+    "main kaan pakad ke khada hoon 🙇",
+    "ek baar mere taraf dekh lo na",
+    "maaf kar do na buchru 💗",
+    "dekho chaand bhi keh raha hai — maaf kar do",
+    "main tab tak nahi hatunga jab tak haan na bolo 😌",
+    "please ful fuli… ek chance de do",
+    "tumhare bina din bekaar ja raha hai",
+    "gussa thook do na… jhappi bhi doonga 🤗",
+    "pleaseee… bas ek baar bol do 'maaf kiya'",
+    "gadhu hoon main, maan liya. ab maaf bhi kar do 🥺",
+    "main yahin hoon. wait kar raha hoon. 💗"
   ];
+  var pi = 0;
+
+  function plead(){
+    if(forgiven) return;
+    noNote.textContent = PLEAS[pi % PLEAS.length];
+    pi++;
+    noNote.classList.remove("show");
+    void noNote.offsetWidth;
+    noNote.classList.add("show");
+  }
 
   noBtn.addEventListener("click", function(){
-    if(dodges < DODGE_LINES.length){
-      noNote.textContent = DODGE_LINES[dodges];
-      noNote.classList.add("show");
-      dodges++;
-      noBtn.style.transform =
-        "translate(" + (Math.random()*70-35).toFixed(0) + "px," +
-                       (Math.random()*26-13).toFixed(0) + "px) scale(" + (1 - dodges*0.1) + ")";
-      return;
-    }
-    noNote.textContent = "Theek hai. Main wait karunga — jitna time lage. 💗";
-    noNote.classList.add("show");
-    noBtn.disabled = true;
-    noBtn.style.opacity = ".35";
-    noBtn.style.cursor = "default";
+    if(forgiven) return;
+    plead();
+    var sc = Math.max(.78, 1 - pi*0.045);
+    noBtn.style.transform =
+      "translate(" + (Math.random()*76-38).toFixed(0) + "px," +
+                     (Math.random()*24-12).toFixed(0) + "px) scale(" + sc.toFixed(2) + ")";
   });
 
-  yesBtn.addEventListener("click", function(){
+  /* keep gently asking while she's on the question */
+  var pleaTimer = null;
+  if(!reduce && "IntersectionObserver" in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting && !forgiven && !pleaTimer){
+          pleaTimer = window.setInterval(plead, 6500);
+        } else if((!en.isIntersecting || forgiven) && pleaTimer){
+          window.clearInterval(pleaTimer);
+          pleaTimer = null;
+        }
+      });
+    }, { threshold:.35 }).observe(askSec);
+  }
+
+  /* ---- yes: the hug ---- */
+  var hug = document.getElementById("hug");
+
+  function openLetter(){
     letter.classList.add("open");
+    window.setTimeout(function(){
+      letter.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block:"center" });
+    }, 380);
+  }
+
+  yesBtn.addEventListener("click", function(){
+    if(forgiven) return;
+    forgiven = true;
+    if(pleaTimer){ window.clearInterval(pleaTimer); pleaTimer = null; }
+
     noNote.classList.remove("show");
     noBtn.style.display = "none";
     yesBtn.disabled = true;
     yesBtn.style.animation = "none";
     yesBtn.textContent = "Thank you, jaan 💗";
     yesBtn.style.cursor = "default";
-    burst();
-    window.setTimeout(function(){
-      letter.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block:"center" });
-    }, 420);
+
+    if(reduce){ openLetter(); return; }
+
+    hug.classList.add("play");
+    window.setTimeout(burst, 1500);
+    window.setTimeout(function(){ hug.classList.remove("play"); }, 3700);
+    window.setTimeout(openLetter, 2600);
   });
 
   /* ---- share ---- */
@@ -699,8 +874,7 @@
     var hc = Math.max(8, Math.round(w/52));
     for(var k=0;k<hc;k++){
       floaters.push({
-        x: Math.random()*w,
-        y: Math.random()*h,
+        x: Math.random()*w, y: Math.random()*h,
         s: 5 + Math.random()*9,
         v: .14 + Math.random()*.3,
         a: .05 + Math.random()*.12,
@@ -764,17 +938,17 @@
     if(reduce) return;
     var w = window.innerWidth, h = window.innerHeight;
     bits = [];
-    for(var i=0;i<120;i++){
+    for(var i=0;i<140;i++){
       bits.push({
         x: Math.random()*w,
-        y: -20 - Math.random()*h*.55,
+        y: -20 - Math.random()*h*.6,
         vx: (Math.random()-.5)*1.2,
         vy: 1.5 + Math.random()*2.5,
         sz: 7 + Math.random()*9,
         rot: Math.random()*Math.PI*2,
         vr: (Math.random()-.5)*.11,
         c: COLORS[Math.floor(Math.random()*COLORS.length)],
-        heart: Math.random() < .45,
+        heart: Math.random() < .5,
         life: 1
       });
     }
