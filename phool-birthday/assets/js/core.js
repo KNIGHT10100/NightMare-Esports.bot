@@ -16,6 +16,10 @@
 
   const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
+  // Midnight on this device at the start of her birthday (config.birthday is 'YYYY-MM-DD').
+  const bday = /^(\d{4})-(\d{2})-(\d{2})$/.exec(C.birthday || '');
+  const birthdayDate = bday ? new Date(+bday[1], +bday[2] - 1, +bday[3]) : null;
+
   /** Fill {name}, {nickname} and {initial} placeholders from the config. */
   function fill(text) {
     const nickname = C.nickname || 'Phool';
@@ -167,7 +171,7 @@
   const graphemes = (text) => (segmenter ? Array.from(segmenter.segment(text), (s) => s.segment) : Array.from(text));
 
   Object.assign(P, {
-    config: C, TAU, rand, randInt, pick, clamp, lerp, easeOutCubic, easeInOutSine, reducedMotion,
+    config: C, birthdayDate, TAU, rand, randInt, pick, clamp, lerp, easeOutCubic, easeInOutSine, reducedMotion,
     fill, screen, onResize, fitCanvas, loop, Timers, wait, replay, vibrate, keepAwake,
     $, $$, h, sticker, toast, graphemes,
     state: { started: false, muted: false },

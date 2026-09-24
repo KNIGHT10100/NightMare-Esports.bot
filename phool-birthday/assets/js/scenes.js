@@ -13,6 +13,76 @@
     return { x: r.left + r.width / 2, y: r.top + r.height / 2, r };
   };
 
+  // ═══ 0 · Countdown to midnight (only before her birthday) ════════════════════
+  S.wait = (function () {
+    const scene = $('#scene-wait');
+    const num = { d: $('#cdD'), h: $('#cdH'), m: $('#cdM'), s: $('#cdS') };
+    const daysUnit = $('#cdDaysUnit');
+    const daysSep = $('#cdDaysSep');
+    const target = P.birthdayDate ? P.birthdayDate.getTime() : 0;
+    const tl = new Timers();
+    let timer = 0;
+    let opened = false;
+    let lastShown = -1;
+    const pad = (n) => String(n).padStart(2, '0');
+
+    if (P.birthdayDate) {
+      $('#waitDate').textContent = P.birthdayDate.toLocaleDateString(undefined, { day: 'numeric', month: 'long' });
+    }
+
+    function render() {
+      const left = target - Date.now();
+      if (left <= 0) { open(); return; }
+      const total = Math.ceil(left / 1000);
+      const d = Math.floor(total / 86400);
+      daysUnit.hidden = daysSep.hidden = d === 0;
+      num.d.textContent = String(d);
+      num.h.textContent = pad(Math.floor((total % 86400) / 3600));
+      num.m.textContent = pad(Math.floor((total % 3600) / 60));
+      num.s.textContent = pad(total % 60);
+      if (total <= 10 && total !== lastShown) {
+        lastShown = total;
+        replay(num.s, 'is-tick');
+        P.audio.tick(total <= 3);
+        P.vibrate(8);
+      }
+    }
+
+    function open() {
+      if (opened) return;
+      opened = true;
+      clearInterval(timer);
+      num.h.textContent = num.m.textContent = num.s.textContent = '00';
+      scene.classList.add('is-open');
+      $('#waitEyebrow').textContent = 'it’s midnight';
+      $('#wait-title').textContent = 'It’s your birthday!';
+      $('#waitLede').textContent = P.fill('Happy Birthday, {nickname}. Your surprise is ready.');
+      P.fireworks.volley(9);
+      tl.after(900, () => P.fireworks.launch({ x: P.screen.w / 2, y: P.screen.h * 0.22, shape: 'heart', size: 1.2 }));
+      P.fx.rain(110);
+      P.audio.chime();
+      P.vibrate([30, 60, 30, 60, 90]);
+      tl.after(5200, () => {
+        P.go('gift', true);
+        try { history.replaceState({ scene: 'gift' }, ''); } catch (e) { /* sandboxed */ }
+      });
+    }
+
+    return {
+      /** True while it is still before midnight of her birthday on this device. */
+      locked: () => !!target && Date.now() < target,
+      enter() {
+        render();
+        timer = setInterval(render, 250);
+      },
+      leave() {
+        clearInterval(timer);
+        tl.clear();
+      },
+      reset() {},
+    };
+  })();
+
   // ═══ 1 · The gift ═══════════════════════════════════════════════════════════
   S.gift = (function () {
     const btn = $('#giftBtn');
@@ -503,7 +573,8 @@
       if (built) return;
       built = true;
       const L = C.letter;
-      $('#letterDate').textContent = new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
+      // Dated on her birthday, whichever day she happens to read it.
+      $('#letterDate').textContent = (P.birthdayDate || new Date()).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
       const blocks = [{ text: P.fill(L.greeting), cls: 'letter__greeting' }].concat(L.paragraphs.map((p) => ({ text: P.fill(p) })));
       blocks.forEach((b) => {
         const para = h('p', { class: b.cls || null });

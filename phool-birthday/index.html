@@ -116,6 +116,27 @@
 
   <main class="stage" id="stage">
 
+    <!-- 0 · Before midnight: a countdown that opens the surprise by itself -->
+    <section class="scene scene--wait" id="scene-wait" data-scene="wait" aria-labelledby="wait-title">
+      <div class="scene__inner wait">
+        <p class="eyebrow" id="waitEyebrow">almost time</p>
+        <h1 class="script-title" id="wait-title" data-bind="name">Nabi</h1>
+        <p class="lede" id="waitLede">Your birthday surprise opens at midnight.</p>
+        <div class="clock" role="timer" aria-label="Time left until your birthday">
+          <span class="clock__unit" id="cdDaysUnit" hidden><b class="clock__num" id="cdD">0</b><i class="clock__label">days</i></span>
+          <span class="clock__sep" id="cdDaysSep" aria-hidden="true" hidden>:</span>
+          <span class="clock__unit"><b class="clock__num" id="cdH">00</b><i class="clock__label">hours</i></span>
+          <span class="clock__sep" aria-hidden="true">:</span>
+          <span class="clock__unit"><b class="clock__num" id="cdM">00</b><i class="clock__label">minutes</i></span>
+          <span class="clock__sep" aria-hidden="true">:</span>
+          <span class="clock__unit"><b class="clock__num" id="cdS">00</b><i class="clock__label">seconds</i></span>
+        </div>
+        <p class="wait__date" id="waitDate"></p>
+        <p class="hint">Keep this page open. At 12, the sky lights up for you.</p>
+        <p class="hint hint--small"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg> Tap anywhere to turn the sound on</p>
+      </div>
+    </section>
+
     <!-- 1 · The gift -->
     <section class="scene scene--gift is-active" id="scene-gift" data-scene="gift" aria-labelledby="gift-title">
       <div class="scene__inner">

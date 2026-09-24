@@ -9,6 +9,10 @@ window.PHOOL_CONFIG = {
   nickname: 'Phool',     // her nickname (फूल, "flower")
   from: '',              // your name for the letter signature (leave '' for just a heart)
 
+  // Her birthday (YYYY-MM-DD). Opened before midnight of this day (her phone's time), the page shows
+  // a countdown and opens itself at 12:00 with fireworks. Add #preview to the link to skip it.
+  birthday: '2026-09-25',
+
   // Fireworks that write in the sky. Keep each one short (it has to fit a phone screen).
   skyWords: { celebrate: 'PHOOL', finale: 'I LOVE YOU' },
 

@@ -45,7 +45,7 @@
   }
 
   // ── Scene manager ────────────────────────────────────────────────────────────
-  ORDER.forEach((name) => {
+  ['wait'].concat(ORDER).forEach((name) => {
     const el = sceneEl(name);
     const heading = el.querySelector('h1, h2');
     if (heading) heading.tabIndex = -1;
@@ -68,7 +68,7 @@
     P.current = name;
     visited.add(name);
     updateNav();
-    $('#hud').hidden = name === 'gift';
+    $('#hud').hidden = name === 'gift' || name === 'wait';
     P.audio.whoosh();
     if (!fromHistory) {
       try { history.pushState({ scene: name }, ''); } catch (e) { /* sandboxed */ }
@@ -173,6 +173,21 @@
 
   // ── Start-up ─────────────────────────────────────────────────────────────────
   if (!P.build.noSong) P.audio.initSong(C.songFile);
+
+  // Before midnight of her birthday, begin with the countdown (add #preview to the link to skip it).
+  if (S.wait.locked() && !/^#preview$/i.test(location.hash)) {
+    const gift = sceneEl('gift');
+    const wait = sceneEl('wait');
+    gift.classList.remove('is-active');
+    gift.inert = true;
+    gift.setAttribute('aria-hidden', 'true');
+    wait.classList.add('is-active');
+    wait.inert = false;
+    wait.removeAttribute('aria-hidden');
+    P.current = 'wait';
+    try { history.replaceState({ scene: 'wait' }, ''); } catch (e) { /* sandboxed */ }
+    S.wait.enter();
+  }
 
   const ready = () => document.documentElement.classList.add('is-ready');
   if (document.fonts && document.fonts.ready) {

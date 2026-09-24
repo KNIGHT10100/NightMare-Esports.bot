@@ -8,6 +8,10 @@ No app to install and no dependencies: plain HTML, CSS and JavaScript.
 
 ## The story, scene by scene
 
+0. **The countdown (only before her birthday).** Opened before midnight of 25 September on her
+   phone, the page shows a clock counting down to 12:00. At midnight the sky fills with fireworks,
+   "It's your birthday!" appears and the surprise opens by itself. Add `#preview` to the end of the
+   link to skip the countdown and check everything early. The date lives in `config.js` (`birthday`).
 1. **The gift.** A pink box with a tag that says "For Nabi". She taps it: it shakes, the lid flies off,
    light rays and confetti burst out. Her very first tap, on the gift or anywhere else, starts your
    song (phones never allow sound before a tap, so this is the earliest moment possible).
@@ -22,7 +26,8 @@ No app to install and no dependencies: plain HTML, CSS and JavaScript.
    through them and taps one to flip it over and read the note on the back.
 5. **A little khat.** An envelope with a wax seal. She taps the seal, the letter slides out and
    writes itself in handwriting, the pen moving across the page and the ink drying from light to dark.
-   "I will be there for you" and "I love you like the way the body loves the soul" get highlighted.
+   It is dated on her birthday. "I will be there for you" and "I love you like the way the body
+   loves the soul" get highlighted.
 6. **Sweet surprises.** Four scratch cards: a hug coupon, a date night, a promise and a confession.
 7. **One tiny question.** *"Will you be mine forever, Phool?"* The *No* button runs away and shrinks,
    *Yes* keeps growing, and after a few tries *No* gives up and turns into another *Yes*.

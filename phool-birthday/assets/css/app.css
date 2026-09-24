@@ -291,10 +291,36 @@ h1:focus, h2:focus { outline: none; }
 .round-btn:active { transform: scale(0.92); }
 .round-btn svg { width: 22px; height: 22px; fill: currentColor; }
 
+/* ═══ 0 · Countdown to midnight ════════════════════════════════════════════ */
+.scene--wait { padding-top: calc(var(--safe-t) + 60px); }
+.scene--wait .script-title { font-size: clamp(72px, 22vw, 116px); }
+.scene--wait.is-open .script-title { font-size: clamp(52px, 15vw, 84px); animation: popIn 0.8s var(--ease-spring) both; }
+.clock { display: flex; align-items: flex-start; justify-content: center; gap: 4px; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+.clock__unit { display: grid; justify-items: center; gap: 6px; min-width: 66px; }
+.clock__unit[hidden], .clock__sep[hidden] { display: none; }
+.clock__num {
+  font: 800 clamp(42px, 13vw, 64px)/1 var(--font-ui);
+  color: transparent;
+  background: linear-gradient(180deg, #fff4d2 10%, #ffcf6e 50%, #ff8fb8 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 14px rgba(255, 190, 110, 0.35));
+}
+.clock__num.is-tick { animation: tickPulse 0.9s var(--ease-out); }
+.clock__label { font: 600 11px/1 var(--font-ui); font-style: normal; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); }
+.clock__sep { font: 800 clamp(34px, 10vw, 52px)/1 var(--font-ui); color: var(--text-faint); padding-top: 2px; }
+.wait__date { margin: 0; font: 700 26px/1.2 var(--font-hand); color: var(--blush); text-shadow: 0 0 16px rgba(255, 111, 159, 0.5); }
+.scene--wait.is-open .clock { animation: popIn 0.6s var(--ease-spring) reverse both; }
+.scene--wait .hint { transition: opacity 0.6s ease; }
+.scene--wait.is-open .hint { opacity: 0; }
+@keyframes tickPulse { 0% { transform: scale(1.35); } 100% { transform: none; } }
+
 /* ═══ 1 · The gift ═════════════════════════════════════════════════════════ */
 .scene--gift { padding-top: calc(var(--safe-t) + 60px); }
-.scene--gift .scene__inner { opacity: 0; transform: translateY(10px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
-.is-ready .scene--gift .scene__inner { opacity: 1; transform: none; }
+.scene--gift .scene__inner,
+.scene--wait .scene__inner { opacity: 0; transform: translateY(10px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
+.is-ready .scene--gift .scene__inner,
+.is-ready .scene--wait .scene__inner { opacity: 1; transform: none; }
 .scene--gift .script-title { font-size: clamp(60px, 18vw, 92px); }
 
 .gift {
