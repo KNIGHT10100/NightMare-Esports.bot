@@ -9,7 +9,8 @@ No app to install and no dependencies: plain HTML, CSS and JavaScript.
 ## The story, scene by scene
 
 1. **The gift.** A pink box with a tag that says "For Nabi". She taps it: it shakes, the lid flies off,
-   light rays and confetti burst out. This first tap also turns the sound on.
+   light rays and confetti burst out. Her very first tap, on the gift or anywhere else, starts your
+   song (phones never allow sound before a tap, so this is the earliest moment possible).
 2. **Countdown and fireworks.** 3, 2, 1, and a rocket climbs from the bottom of the screen and writes
    **PHOOL** in sparks, framed by a heart and a flower. "Happy Birthday" writes itself in gold.
    Every tap on the sky launches another firework; *Fire again* launches a whole volley.
@@ -52,8 +53,10 @@ cropped to fit their polaroid automatically; mark a landscape photo with `wide: 
 
 ### Your song
 
-Save it as `assets/audio/song.mp3`. It starts when she opens the photos and plays through the letter
-and the finale. Without it, the page plays its own music-box melody.
+Save it as `assets/audio/song.mp3`. It loads while she looks at the first screen and starts with her
+first tap. At the cake it fades out while the music box sings Happy Birthday, then carries on from the
+same spot through the photos, the letter and the finale. If it ends before she does, the music box
+takes over. Without the file, the music box plays from the first tap instead.
 
 **Why the photos and the song are not in git:** this repository is public, so anything committed
 here can be seen by anyone. Personal photos stay private that way, and a commercial song must not be
@@ -110,11 +113,13 @@ Some details:
   x = 16 sin³t, y = 13 cos t − 5 cos 2t − 2 cos 3t − cos 4t for the heart, a rose curve
   r = |cos(5θ/2)| for the phool, and Temple Fay's butterfly curve for the nabi.
 - **Blowing out the candles** only reacts to breath. The microphone signal must be loud compared with
-  the room (measured in the first moment), bass-heavy, noise-like rather than tonal (spectral flatness
-  measured at 11.7 Hz resolution), and it must last longer than 220 ms. In testing with synthetic
-  audio, soft, normal and heavy breaths blew the candles out, while singing, speech, the page's own
-  music box and claps did not. Nothing is recorded; the microphone switches off as soon as the
-  candles are out. Tapping the flames always works too.
+  the room (measured in the first moment), bass-heavy or broadband, and noise-like: a flat spectrum
+  with almost no tonal peaks (bins standing 8× above their neighbours, at 11.7 Hz resolution,
+  smoothed over 150 ms). It must also last longer than 220 ms. While the microphone listens, the song
+  pauses so the phone doesn't hear its own speaker. In testing, soft, normal and heavy breaths blew
+  the candles out, while singing, speech, the page's own music box, claps and two excerpts of the
+  song itself (the quiet opening and the loud climax) did not. Nothing is recorded; the microphone
+  switches off as soon as the candles are out. Tapping the flames always works too.
 - **The letter** writes one character at a time with natural pauses at commas and full stops.
   The page follows the pen unless she scrolls herself, and the screen stays awake while she reads.
 - **Kind to everyone:** it respects *reduced motion*, works with a keyboard (arrow keys for the photos,

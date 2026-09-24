@@ -101,24 +101,25 @@
     go('gift');
   };
 
-  // ── Music follows the scenes ─────────────────────────────────────────────────
+  // ── Music: her song all the way through (or the music box if there is no song),
+  //    and 'quiet' while the music box sings Happy Birthday.
   P.music = function (mode) {
     if (!P.audio.ready) return;
-    if (mode === 'song') {
-      if (!P.audio.startSong()) P.audio.ambient(true);
-    } else if (mode === 'ambient') {
-      if (!P.audio.songPlaying()) P.audio.ambient(true);
-    } else if (mode === 'quiet') {
+    if (mode === 'quiet') {
+      P.audio.quietSong();
       P.audio.ambient(false);
+    } else if (!P.audio.startSong()) {
+      P.audio.ambient(true);
     }
   };
 
-  /** First tap on the gift: unlock sound, keep the screen on, warm up the photos. */
+  /** Her very first touch: unlock sound, start the song, keep the screen on, warm up the photos. */
   P.start = function () {
     P.audio.unlock();
     if (P.state.started) return;
     P.state.started = true;
     P.keepAwake();
+    P.music('play');
     P.sky.startButterflies(16000);
     (C.photos || []).forEach((p) => {
       const img = new Image();
@@ -157,6 +158,15 @@
       P.fx.hearts(e.clientX, e.clientY, 4);
     }
   }, { passive: true });
+
+  // Phones only allow sound after a touch, so the music starts with her first touch anywhere
+  // (pointerup/touchend/click/keydown are the events browsers accept for that).
+  const firstTouch = (e) => {
+    if (e.type === 'keydown' && (e.ctrlKey || e.metaKey || e.altKey)) return;
+    if (!P.state.started) P.start();
+    else P.audio.retrySong();
+  };
+  ['pointerup', 'touchend', 'click', 'keydown'].forEach((type) => document.addEventListener(type, firstTouch, { passive: true }));
 
   // ── Start-up ─────────────────────────────────────────────────────────────────
   if (!P.build.noSong) P.audio.initSong(C.songFile);

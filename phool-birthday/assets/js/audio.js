@@ -275,7 +275,7 @@
   A.ambient = function (on) {
     if (!ctx) return;
     if (on) {
-      if (amb.on || song.playing) return;
+      if (amb.on || A.songActive()) return;
       amb.on = true;
       clearTimeout(amb.stopTimer);
       if (!amb.timer) {
@@ -296,77 +296,108 @@
     }
   };
 
-  // ── Optional song file (config.songFile). Missing file = silently keep the music box.
-  const song = { el: null, routed: false, playing: false, failed: false, resume: false };
+  // ── Her song (config.songFile). It starts with her first tap, steps aside while the music box
+  //    sings Happy Birthday, and hands over to the music box when it ends. No file = music box only.
+  const song = { el: null, routed: false, wanted: false, failed: false, ended: false, retry: false, resumeOnShow: false, pauseTimer: 0 };
+  const SONG_LEVEL = 0.85;
 
   A.initSong = function (src) {
     if (!src) return;
     const el = new Audio();
-    el.preload = 'none';
     el.setAttribute('playsinline', '');
+    // Buffer while she reads the first screen, so the song begins the instant she taps.
+    el.preload = 'auto';
     el.addEventListener('error', () => {
       song.failed = true;
-      if (song.playing) { song.playing = false; A.ambient(true); }
+      if (song.wanted) A.ambient(true);
     });
     el.addEventListener('ended', () => {
-      song.playing = false;
-      A.ambient(true);
+      song.ended = true;
+      if (song.wanted) A.ambient(true);
     });
     el.src = src;
     song.el = el;
   };
 
-  /** Route the song through Web Audio (for smooth fades) and start buffering it early. */
+  /** Route the song through Web Audio so it fades smoothly (needs the audio context from the first tap). */
   function wireSong() {
     const el = song.el;
     if (!el || song.routed) return;
-    // file:// pages treat media as cross-origin, which Web Audio would silence, so play those directly.
+    // file:// pages treat media as cross-origin, which Web Audio would silence, so those play directly.
     if (/^https?:$/.test(location.protocol) && ctx.createMediaElementSource) {
       try {
         ctx.createMediaElementSource(el).connect(songBus);
         song.routed = true;
       } catch (e) { song.routed = false; }
     }
-    el.preload = 'auto';
-    try { el.load(); } catch (e) { /* ignore */ }
   }
 
-  /** Starts the song if one is available. Call from inside a tap handler. */
+  /** True while the song is (or should be) the background music. */
+  A.songActive = () => !!song.el && song.wanted && !song.failed && !song.ended;
+  A.ambientPlaying = () => amb.on;
+  A.songPlaying = () => !!song.el && !song.el.paused;
+
+  /** Plays or resumes the song with a fade-in. Returns false when there is no song to play. */
   A.startSong = function () {
     const el = song.el;
-    if (!el || song.failed || !ctx) return false;
-    if (song.playing) return true;
+    if (!el || song.failed || song.ended || !ctx) return false;
+    song.wanted = true;
+    clearTimeout(song.pauseTimer);
     A.ambient(false);
-    song.playing = true;
     if (song.routed) {
-      songBus.gain.cancelScheduledValues(ctx.currentTime);
-      songBus.gain.setValueAtTime(0, ctx.currentTime);
-      songBus.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 3);
+      const now = ctx.currentTime;
+      songBus.gain.cancelScheduledValues(now);
+      songBus.gain.setValueAtTime(el.paused ? 0 : songBus.gain.value, now);
+      songBus.gain.linearRampToValueAtTime(SONG_LEVEL, now + (el.currentTime > 1 ? 1.6 : 2.5));
     } else {
       el.muted = P.state.muted;
     }
-    const p = el.play();
-    if (p && p.catch) {
-      p.catch(() => {
-        song.playing = false;
-        song.failed = true;
-        A.ambient(true);
-      });
+    if (el.paused) {
+      const p = el.play();
+      if (p && p.catch) {
+        p.catch((err) => {
+          // Blocked until a real tap: try again on the next one. Anything else: fall back to the music box.
+          if (err && err.name === 'NotAllowedError') { song.retry = true; return; }
+          song.failed = true;
+          if (song.wanted) A.ambient(true);
+        });
+      }
     }
     return true;
   };
-  A.songPlaying = () => song.playing;
+
+  /** Fades the song out and pauses it where it is, e.g. while Happy Birthday is sung. */
+  A.quietSong = function () {
+    const el = song.el;
+    song.wanted = false;
+    if (!el || el.paused) return;
+    if (song.routed) {
+      fade(songBus, 0, 0.9);
+      clearTimeout(song.pauseTimer);
+      song.pauseTimer = setTimeout(() => { if (!song.wanted) el.pause(); }, 950);
+    } else {
+      el.pause();
+    }
+  };
+
+  /** Called on every tap: finishes a start that the browser blocked earlier. */
+  A.retrySong = function () {
+    if (song.retry && song.wanted) {
+      song.retry = false;
+      A.startSong();
+    }
+  };
 
   document.addEventListener('visibilitychange', () => {
     if (!ctx) return;
     if (document.hidden) {
       ctx.suspend().catch(() => {});
-      if (song.playing && song.el) { song.el.pause(); song.resume = true; }
+      if (song.el && !song.el.paused) { song.el.pause(); song.resumeOnShow = true; }
     } else {
       ctx.resume().catch(() => {});
-      if (song.resume && song.el) {
-        song.resume = false;
-        song.el.play().catch(() => {});
+      if (song.resumeOnShow && song.el) {
+        song.resumeOnShow = false;
+        if (song.wanted && !song.ended) song.el.play().catch(() => { song.retry = true; });
       }
     }
   });
@@ -617,9 +648,9 @@
   };
 
   // ── Breath detector for blowing out candles (optional; needs a microphone).
-  //    Following the approach of the "candlelight" card: a blow is loud relative to the room,
-  //    bass-heavy, and noise-like (high spectral flatness), and it has to last a moment,
-  //    so talking, singing, claps and coughs don't count. Nothing is recorded or sent anywhere.
+  //    Building on the "candlelight" card's approach: a blow is loud relative to the room,
+  //    bass-heavy or broadband, noise-like (flat spectrum, no tonal peaks), and it lasts a moment,
+  //    so talking, singing, music, claps and coughs don't count. Nothing is recorded or sent anywhere.
   A.canListen = function () {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.isSecureContext) return false;
     const fp = document.featurePolicy || document.permissionsPolicy;
@@ -641,10 +672,21 @@
     const time = new Float32Array(analyser.fftSize);
     const freq = new Float32Array(analyser.frequencyBinCount);
     const binHz = ctx.sampleRate / analyser.fftSize;
+    // Tonal peaks: bins standing > 8× above the geometric mean of their ±10 neighbours, 150 Hz–4 kHz.
+    // Noise (breath) almost never does; voices, instruments and music do all the time, and the
+    // measure ignores the overall slope of the spectrum.
+    const PEAK_REACH = 10;
+    const peakLo = Math.ceil(150 / binHz);
+    const peakHi = Math.min(freq.length - PEAK_REACH - 1, Math.floor(4000 / binHz));
+    const logPow = new Float64Array(freq.length);
+    const prefix = new Float64Array(freq.length + 1);
+    const LN8 = Math.log(8);
     const calibration = [];
     const started = Date.now();
     let floor = null;
     let breathMs = 0; // how long the sound has stayed breath-like
+    let flatAvg = 0; // low-band flatness, smoothed over ~150 ms
+    let tonalAvg = 0; // share of tonal peaks, smoothed over ~150 ms
     let lastT = 0;
     let raf = 0;
     let stopped = false;
@@ -683,6 +725,17 @@
       const flatLow = nLow && lowBand > 0 ? Math.exp(logLow / nLow) / (lowBand / nLow) : 0;
       const lowShare = total > 0 ? low / total : 0;
 
+      for (let i = 0; i < freq.length; i++) {
+        logPow[i] = (freq[i] < -160 ? -160 : freq[i]) * (Math.LN10 / 10); // ln(power), silence clamped
+        prefix[i + 1] = prefix[i] + logPow[i];
+      }
+      let peaks = 0;
+      for (let i = peakLo; i <= peakHi; i++) {
+        const neighbours = (prefix[i + PEAK_REACH + 1] - prefix[i - PEAK_REACH] - logPow[i]) / (2 * PEAK_REACH);
+        if (logPow[i] - neighbours > LN8) peaks++;
+      }
+      const tonal = peakHi > peakLo ? peaks / (peakHi - peakLo + 1) : 0;
+
       if (floor === null) {
         calibration.push(rms);
         if (Date.now() - started > 700) {
@@ -691,11 +744,17 @@
         }
       }
       const loud = floor !== null && rms > Math.max(floor * 3.2, 0.02);
-      const breathy = flatLow > 0.28 && (lowShare > 0.35 || flatness > 0.25);
+      // Judge smoothed values, not single frames: loud music can look noise-like for a moment
+      // (a drum fill), but it keeps showing tonal peaks, while breath stays smooth noise.
+      // Measured on test audio: breath ≈ 0.007 tonal, a song's loud climax ≈ 0.075, voices ≈ 0.13.
+      const k = Math.min(1, dt / 150);
+      flatAvg += (flatLow - flatAvg) * k;
+      tonalAvg += (tonal - tonalAvg) * k;
+      const breathy = tonalAvg < 0.035 && flatAvg > 0.22 && (lowShare > 0.35 || flatness > 0.25);
       // A real blow lasts well over 200 ms; sibilants in speech, claps and coughs don't.
       breathMs = loud && breathy ? breathMs + dt : Math.max(0, breathMs - dt * 2);
       const level = floor === null ? 0 : clamp((rms - floor * 1.5) / 0.15, 0, 1);
-      onFrame({ level, blowing: breathMs >= 220, rms, flatness, flatLow, lowShare });
+      onFrame({ level, blowing: breathMs >= 220, rms, flatness, flatLow, flatAvg, lowShare, tonal, tonalAvg });
       raf = requestAnimationFrame(step);
     }
     raf = requestAnimationFrame(step);

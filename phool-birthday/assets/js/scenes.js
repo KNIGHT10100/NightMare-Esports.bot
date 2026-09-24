@@ -59,7 +59,7 @@
     return {
       canFire: () => scene.classList.contains('is-revealed'),
       enter() {
-        P.music('ambient');
+        P.music('play');
         if (introDone) {
           reveal();
           P.fireworks.show(true);
@@ -115,6 +115,7 @@
     const hintText = hint.textContent;
     let blown = false;
     let stopMic = null;
+    let listening = false;
     let blowCooldown = 0;
 
     const CANDLES = [
@@ -168,7 +169,7 @@
         lines.forEach((l) => { l.classList.remove('is-on'); l.classList.add('is-done'); });
         if (!blown) {
           hint.classList.add('is-nudge');
-          P.music('ambient');
+          if (!listening) P.music('play');
         }
       });
     }
@@ -182,7 +183,7 @@
       if (!c || blown || c.classList.contains('is-out')) return;
       c.classList.add('is-out');
       c.setAttribute('aria-label', 'Candle ' + (i + 1) + ' is blown out');
-      P.audio.puff();
+      if (!listening) P.audio.puff(); // a synthetic puff near the microphone could blow the next candle
       P.vibrate(15);
       if (!litCandles().length) allOut();
     }
@@ -198,7 +199,7 @@
         P.fx.confetti(c.x, c.r.top + 30, { count: 150, power: 1.2 });
         P.audio.stopBirthday();
         P.audio.chime();
-        P.music('ambient');
+        P.music('play');
         done.hidden = false;
         replay(done, 'is-in');
         releaseLanterns();
@@ -237,13 +238,17 @@
 
     // Blowing for real, if a microphone is allowed here.
     function stopListening() {
+      listening = false;
       if (stopMic) { stopMic(); stopMic = null; }
       cake.style.setProperty('--wind', '0');
       micBtn.disabled = false;
       micBtn.textContent = micLabel;
     }
     micBtn.addEventListener('click', async () => {
-      if (stopMic || blown) return;
+      if (stopMic || listening || blown) return;
+      listening = true;
+      // The room goes quiet for the candles: the phone's own speaker would reach its microphone.
+      P.music('quiet');
       micBtn.disabled = true;
       micBtn.textContent = 'Listening… blow gently towards your phone';
       try {
@@ -260,14 +265,16 @@
         if (blown || P.current !== 'wish') stop();
         else stopMic = stop;
       } catch (e) {
+        listening = false;
         micBtn.hidden = true;
         hint.textContent = 'No microphone? No problem. Tap each flame to blow it out.';
+        if (P.current === 'wish') P.music('play');
       }
     });
 
     return {
       enter() {
-        if (blown) { P.music('ambient'); return; }
+        if (blown) { P.music('play'); return; }
         micBtn.hidden = !P.audio.canListen() || !!P.build.noMic;
         tl.after(900, sing);
       },
@@ -452,7 +459,7 @@
     return {
       enter() {
         build();
-        P.music('song');
+        P.music('play');
         if (!nudged) {
           nudged = true;
           setTimeout(() => replay(deck, 'is-nudging'), 1100);
@@ -607,7 +614,7 @@
 
     return {
       enter() {
-        P.music('song');
+        P.music('play');
         if (opened && !finished && !writing && !letter.hidden) {
           writing = true;
           writeNext();
@@ -810,7 +817,7 @@
     return {
       enter() {
         build();
-        P.music('song');
+        P.music('play');
         requestAnimationFrame(() => cards.forEach((sc) => { if (!sc.ctx) paint(sc); }));
       },
       leave() { P.audio.scratchEnd(); },
@@ -900,7 +907,7 @@
 
     return {
       enter() {
-        P.music('song');
+        P.music('play');
         if (answered) say('You already said yes. No take-backs.');
       },
       leave() {},
@@ -1036,7 +1043,7 @@
     return {
       canFire: () => done,
       enter() {
-        P.music('song');
+        P.music('play');
         if (done && !finale.hidden) P.fireworks.show(true);
       },
       leave() {

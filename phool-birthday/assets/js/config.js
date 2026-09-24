@@ -112,7 +112,7 @@ window.PHOOL_CONFIG = {
   ],
   moonSecret: 'The moon asked me to tell you something: it is jealous. You shine brighter.',
 
-  // Optional: drop your song at this path (e.g. an .mp3) and it plays from the photos onwards.
-  // Leave the file out and the built-in music box plays instead.
+  // Her song: save it at this path. It starts with her very first tap, pauses while the music box
+  // sings Happy Birthday, then carries on to the end. Without the file, the music box plays instead.
   songFile: 'assets/audio/song.mp3',
 };
