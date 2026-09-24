@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Happy Birthday, Phool 🌸</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="A little birthday surprise, made with love.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0e0b2a">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="For Phool">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Great+Vibes&family=Kalam:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <!-- ░░ Shared sticker art (inline so it works offline and inherits colours) ░░ -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="sticker-edge" x="-25%" y="-25%" width="150%" height="150%">
+        <feMorphology in="SourceAlpha" operator="dilate" radius="5" result="grown"/>
+        <feFlood flood-color="#ffffff"/>
+        <feComposite in2="grown" operator="in" result="edge"/>
+        <feMerge><feMergeNode in="edge"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <linearGradient id="heart-fill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffa6c9"/>
+        <stop offset=".55" stop-color="#ff5f98"/>
+        <stop offset="1" stop-color="#e23c78"/>
+      </linearGradient>
+    </defs>
+    <symbol id="s-heart" viewBox="0 0 100 100">
+      <path style="fill: var(--c, #ff5f98)" d="M50 88C22 68 7 52 7 33 7 19 18 9 31 9c8 0 15 4 19 11 4-7 11-11 19-11 13 0 24 10 24 24 0 19-15 35-43 55z"/>
+      <path fill="#fff" opacity=".5" d="M26 21c-7 3-10 9-9 15 3-6 7-10 13-12z"/>
+    </symbol>
+    <symbol id="s-flower" viewBox="0 0 100 100">
+      <g style="fill: var(--c, #ff8fb8)">
+        <ellipse cx="50" cy="26" rx="16" ry="23"/>
+        <ellipse cx="50" cy="26" rx="16" ry="23" transform="rotate(72 50 50)"/>
+        <ellipse cx="50" cy="26" rx="16" ry="23" transform="rotate(144 50 50)"/>
+        <ellipse cx="50" cy="26" rx="16" ry="23" transform="rotate(216 50 50)"/>
+        <ellipse cx="50" cy="26" rx="16" ry="23" transform="rotate(288 50 50)"/>
+      </g>
+      <circle cx="50" cy="50" r="13" style="fill: var(--c2, #ffd36e)"/>
+      <circle cx="46" cy="46" r="4" fill="#fff" opacity=".7"/>
+    </symbol>
+    <symbol id="s-butterfly" viewBox="0 0 100 100">
+      <g style="fill: var(--c, #b9a2ff)">
+        <path d="M48 46C40 22 16 10 8 22c-6 10 6 26 38 30z"/>
+        <path d="M52 46c8-24 32-36 40-24 6 10-6 26-38 30z"/>
+        <path d="M47 55C30 57 16 68 22 80c6 10 20 0 26-20z"/>
+        <path d="M53 55c17 2 31 13 25 25-6 10-20 0-26-20z"/>
+      </g>
+      <g style="fill: var(--c2, #ff9cc2)">
+        <circle cx="22" cy="27" r="5.5"/><circle cx="78" cy="27" r="5.5"/>
+        <circle cx="30" cy="72" r="4"/><circle cx="70" cy="72" r="4"/>
+      </g>
+      <ellipse cx="50" cy="53" rx="3.4" ry="17" fill="#3b2a55"/>
+      <path d="M49 37c-3-8-7-12-11-14M51 37c3-8 7-12 11-14" stroke="#3b2a55" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <circle cx="38" cy="23" r="2.6" fill="#3b2a55"/><circle cx="62" cy="23" r="2.6" fill="#3b2a55"/>
+    </symbol>
+    <symbol id="s-sparkle" viewBox="0 0 100 100">
+      <path style="fill: var(--c, #ffd36e)" d="M50 6c3 28 16 41 44 44-28 3-41 16-44 44-3-28-16-41-44-44 28-3 41-16 44-44z"/>
+    </symbol>
+    <symbol id="s-star" viewBox="0 0 100 100">
+      <path style="fill: var(--c, #ffcf5a); stroke: var(--c, #ffcf5a)" stroke-width="7" stroke-linejoin="round" d="M50 10l11 25.5 27.7 2.4-21 18.2 6.3 27.1L50 69 26 83.2l6.3-27.1-21-18.2L39 35.5z"/>
+      <circle cx="42" cy="52" r="3" fill="#6b3a1f"/><circle cx="58" cy="52" r="3" fill="#6b3a1f"/>
+      <path d="M44 60q6 5 12 0" stroke="#6b3a1f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="s-sun" viewBox="0 0 100 100">
+      <g style="stroke: var(--c, #ffc23d)" stroke-width="7" stroke-linecap="round">
+        <path d="M50 6v11M50 83v11M6 50h11M83 50h11M19 19l8 8M73 73l8 8M19 81l8-8M73 27l8-8"/>
+      </g>
+      <circle cx="50" cy="50" r="24" style="fill: var(--c, #ffc23d)"/>
+      <circle cx="42" cy="47" r="3" fill="#7a3d12"/><circle cx="58" cy="47" r="3" fill="#7a3d12"/>
+      <path d="M43 56q7 6 14 0" stroke="#7a3d12" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <circle cx="36" cy="55" r="3.4" fill="#ff8a7a" opacity=".6"/><circle cx="64" cy="55" r="3.4" fill="#ff8a7a" opacity=".6"/>
+    </symbol>
+    <symbol id="s-cloud" viewBox="0 0 100 100">
+      <path style="fill: var(--c, #eef4ff)" d="M27 76c-14 0-20-10-18-19 2-10 12-14 20-11 2-13 14-21 27-17 10 3 15 11 15 18 10-2 20 5 19 15-1 9-9 14-17 14z"/>
+      <circle cx="42" cy="58" r="2.8" fill="#4b5a8a"/><circle cx="58" cy="58" r="2.8" fill="#4b5a8a"/>
+      <path d="M45 65q5 4 10 0" stroke="#4b5a8a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <circle cx="36" cy="64" r="3.4" fill="#ff9cc2" opacity=".7"/><circle cx="64" cy="64" r="3.4" fill="#ff9cc2" opacity=".7"/>
+    </symbol>
+    <symbol id="s-bow" viewBox="0 0 100 100">
+      <g style="fill: var(--c, #ff7fae)">
+        <path d="M50 50C36 30 12 28 12 44s24 16 38 6z"/>
+        <path d="M50 50c14-20 38-22 38-6S64 60 50 50z"/>
+        <path d="M46 54 34 86l8-4 4 8 4-34z"/>
+        <path d="m54 54 12 32-8-4-4 8-4-34z"/>
+      </g>
+      <circle cx="50" cy="50" r="8.5" style="fill: var(--c2, #e2457e)"/>
+    </symbol>
+  </svg>
+
+  <!-- ░░ Sky layers ░░ -->
+  <canvas id="sky" class="layer layer--sky" aria-hidden="true"></canvas>
+  <canvas id="fireworks" class="layer layer--fireworks" aria-hidden="true"></canvas>
+  <button class="moon" id="moon" type="button" aria-label="The moon"></button>
+
+  <!-- ░░ Top bar ░░ -->
+  <header class="hud" id="hud" hidden>
+    <span class="hud__spacer"></span>
+    <nav class="progress" id="progress" aria-label="Surprises"></nav>
+    <button class="hud__sound" id="soundBtn" type="button" aria-pressed="true" aria-label="Sound is on. Tap to mute.">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="sound-on" d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/><path class="sound-off" d="M4 9v6h4l5 4V5L8 9H4zm12.6 3 2.7-2.7-1.4-1.4-2.7 2.7-2.7-2.7-1.4 1.4 2.7 2.7-2.7 2.7 1.4 1.4 2.7-2.7 2.7 2.7 1.4-1.4z"/></svg>
+    </button>
+  </header>
+
+  <main class="stage" id="stage">
+
+    <!-- 1 · The gift -->
+    <section class="scene scene--gift is-active" id="scene-gift" data-scene="gift" aria-labelledby="gift-title">
+      <div class="scene__inner">
+        <p class="eyebrow">a little surprise</p>
+        <h1 class="script-title" id="gift-title">Hey <span data-bind="nickname">Phool</span></h1>
+        <p class="lede">Someone made something special for you, just for today.</p>
+        <button class="gift" id="giftBtn" type="button" aria-label="Open your birthday gift">
+          <span class="gift__rays" aria-hidden="true"></span>
+          <span class="gift__shadow" aria-hidden="true"></span>
+          <span class="gift__box" aria-hidden="true"><span class="gift__ribbon"></span></span>
+          <span class="gift__lid" aria-hidden="true">
+            <span class="gift__ribbon"></span>
+            <span class="gift__bow"><i></i><i></i><b></b></span>
+          </span>
+          <span class="gift__tag" aria-hidden="true">For <span data-bind="name">Nabi</span></span>
+          <span class="gift__twinkle gift__twinkle--1" aria-hidden="true"></span>
+          <span class="gift__twinkle gift__twinkle--2" aria-hidden="true"></span>
+          <span class="gift__twinkle gift__twinkle--3" aria-hidden="true"></span>
+        </button>
+        <p class="hint hint--pulse">Tap the gift to open it</p>
+        <p class="hint hint--small"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg> Sound on makes it even better</p>
+      </div>
+    </section>
+
+    <!-- 2 · Countdown + fireworks -->
+    <section class="scene scene--celebrate" id="scene-celebrate" data-scene="celebrate" aria-labelledby="celebrate-title">
+      <div class="countdown" id="countdown" aria-live="assertive"></div>
+      <div class="scene__inner celebrate">
+        <div class="celebrate__sky" aria-hidden="true"></div>
+        <div class="celebrate__words">
+          <h2 class="celebrate__title" id="celebrate-title"><span class="write-on">Happy Birthday</span></h2>
+          <p class="celebrate__name"><span data-bind="name">Nabi</span>, my <span data-bind="nickname">Phool</span></p>
+          <p class="celebrate__sub">Tonight the whole sky is celebrating you</p>
+        </div>
+        <div class="scene__actions celebrate__actions">
+          <p class="hint">Tap anywhere to light up the sky</p>
+          <div class="btn-row">
+            <button class="btn btn--ghost" id="volleyBtn" type="button">Fire again</button>
+            <button class="btn" type="button" data-next>Make a wish</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · Cake + wish -->
+    <section class="scene scene--wish" id="scene-wish" data-scene="wish" aria-labelledby="wish-title">
+      <div class="lanterns" id="lanterns" aria-hidden="true"></div>
+      <div class="scene__inner">
+        <h2 class="script-title" id="wish-title">Make a wish</h2>
+        <ol class="lyrics" id="lyrics" aria-label="Happy birthday song"></ol>
+        <div class="cake" id="cake">
+          <div class="cake__candles" id="candles"></div>
+          <div class="cake__tier cake__tier--top"><span class="cake__drips"></span><span class="cake__sprinkles"></span></div>
+          <div class="cake__tier cake__tier--bottom">
+            <span class="cake__drips"></span><span class="cake__sprinkles"></span>
+            <span class="cake__writing" data-bind="nickname">Phool</span>
+          </div>
+          <div class="cake__plate"></div>
+        </div>
+        <p class="hint" id="wishHint">Close your eyes, make a wish, then tap each flame to blow it out</p>
+        <button class="btn btn--ghost btn--small" id="micBtn" type="button" hidden>Or blow for real (uses your mic)</button>
+        <div class="wish-done" id="wishDone" hidden>
+          <p class="wish-done__line">I wish everything you want comes true</p>
+          <p class="wish-done__sub">Your wishes are floating up to the stars. Tap a lantern to read one.</p>
+        </div>
+        <button class="btn" type="button" data-next id="wishNext" hidden>See our memories</button>
+      </div>
+    </section>
+
+    <!-- 4 · Polaroid memories -->
+    <section class="scene scene--memories" id="scene-memories" data-scene="memories" aria-labelledby="memories-title">
+      <div class="scene__inner">
+        <h2 class="script-title" id="memories-title">Our little moments</h2>
+        <div class="deck" id="deck" aria-roledescription="photo stack"></div>
+        <div class="deck-nav">
+          <button class="round-btn" id="deckPrev" type="button" aria-label="Previous photo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg>
+          </button>
+          <div class="deck-dots" id="deckDots" aria-hidden="true"></div>
+          <button class="round-btn" id="deckNext" type="button" aria-label="Next photo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.6 5.4 1.4-1.4 8 8-8 8-1.4-1.4 6.6-6.6z"/></svg>
+          </button>
+        </div>
+        <p class="hint">Swipe through the photos. Tap one to flip it over.</p>
+        <button class="btn" type="button" data-next>Open your letter</button>
+      </div>
+    </section>
+
+    <!-- 5 · The handwritten khat -->
+    <section class="scene scene--khat" id="scene-khat" data-scene="khat" aria-labelledby="khat-title">
+      <div class="scene__inner khat">
+        <div class="khat__intro" id="khatIntro">
+          <h2 class="script-title" id="khat-title">A little khat for you</h2>
+          <p class="lede">Written by hand, sealed with love</p>
+          <div class="envelope" id="envelope">
+            <div class="envelope__back"></div>
+            <div class="envelope__paper"><span></span><span></span><span></span></div>
+            <div class="envelope__pocket"></div>
+            <div class="envelope__flap"></div>
+            <button class="seal" id="sealBtn" type="button" aria-label="Break the seal and open the letter"><span data-bind="initial">P</span></button>
+          </div>
+          <p class="hint hint--pulse">Tap the seal to open it</p>
+        </div>
+        <article class="letter" id="letter" hidden aria-label="A letter for you">
+          <div class="letter__paper" id="letterPaper" tabindex="0">
+            <div class="letter__body" id="letterBody">
+              <p class="letter__date" id="letterDate"></p>
+              <div id="letterText"></div>
+              <div class="letter__sign" id="letterSign" hidden>
+                <p class="letter__closing" id="letterClosing"></p>
+                <p class="letter__signature" id="letterSignature"></p>
+                <svg class="letter__heart" viewBox="0 0 100 90" aria-hidden="true"><path pathLength="100" d="M50 82C24 62 8 48 8 30 8 17 18 8 30 8c8 0 15 4 20 12 5-8 12-12 20-12 12 0 22 9 22 22 0 18-16 32-42 52z"/></svg>
+              </div>
+              <span class="pen" id="pen" aria-hidden="true"></span>
+            </div>
+            <svg class="letter__flower" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-flower"/></svg>
+          </div>
+          <div class="letter__actions">
+            <button class="btn btn--ghost" id="skipWriting" type="button">Show the whole letter</button>
+            <button class="btn" type="button" data-next id="khatNext" hidden>More surprises</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 6 · Scratch cards -->
+    <section class="scene scene--surprises" id="scene-surprises" data-scene="surprises" aria-labelledby="surprises-title">
+      <div class="scene__inner">
+        <h2 class="script-title" id="surprises-title">Sweet little surprises</h2>
+        <p class="lede">Scratch each card with your finger</p>
+        <div class="scratch-grid" id="scratchGrid"></div>
+        <button class="btn" type="button" data-next id="surprisesNext">One last question</button>
+      </div>
+    </section>
+
+    <!-- 7 · The playful question -->
+    <section class="scene scene--question" id="scene-question" data-scene="question" aria-labelledby="question-title">
+      <div class="scene__inner">
+        <h2 class="script-title" id="question-title">One tiny question</h2>
+        <p class="question" id="questionText"></p>
+        <div class="yn" id="yn">
+          <button class="btn btn--yes" id="yesBtn" type="button">Yes</button>
+          <button class="btn btn--no" id="noBtn" type="button">No</button>
+        </div>
+        <p class="plead" id="plead" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- 8 · Forever -->
+    <section class="scene scene--forever" id="scene-forever" data-scene="forever" aria-label="Forever">
+      <div class="scene__inner forever">
+        <div class="forever__hold" id="foreverHold">
+          <p class="lede">Press and hold the heart</p>
+          <button class="love-heart" id="loveHeart" type="button" aria-label="Press and hold to fill the heart with love">
+            <svg class="love-heart__ring" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="love-heart__track" cx="60" cy="60" r="54"/>
+              <circle class="love-heart__fill" id="loveRing" cx="60" cy="60" r="54"/>
+            </svg>
+            <svg class="love-heart__shape" viewBox="0 0 100 100" aria-hidden="true"><use href="#s-heart" style="--c: url(#heart-fill)"/></svg>
+          </button>
+          <p class="hint">to fill it with all my love</p>
+        </div>
+        <div class="finale" id="finale" hidden>
+          <p class="finale__title" id="finaleTitle"></p>
+          <p class="finale__line" id="finaleLine"></p>
+          <blockquote class="finale__quote" id="finaleQuote"></blockquote>
+          <p class="finale__wish" id="finaleWish"></p>
+          <div class="btn-row finale__actions">
+            <button class="btn" id="fireAgainBtn" type="button">Touch for more fireworks</button>
+            <button class="btn btn--ghost" id="letterAgainBtn" type="button">Read my letter again</button>
+            <button class="btn btn--ghost" id="replayBtn" type="button">Replay from the start</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="butterflies" id="butterflies"></div>
+  <canvas id="fx" class="layer layer--fx" aria-hidden="true"></canvas>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="rotate" aria-hidden="true">
+    <svg class="rotate__phone" viewBox="0 0 64 64"><rect x="20" y="6" width="24" height="44" rx="5"/><circle cx="32" cy="44" r="2"/><path d="M50 30a18 18 0 0 1-8 15m-2-4 2 4 4-1"/></svg>
+    <p class="rotate__title">Hold your phone upright</p>
+    <p class="rotate__sub">This little surprise is made to be read like a letter.</p>
+  </div>
+
+  <noscript><p class="noscript">This birthday surprise needs JavaScript turned on.</p></noscript>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/audio.js"></script>
+  <script src="assets/js/sky.js"></script>
+  <script src="assets/js/fireworks.js"></script>
+  <script src="assets/js/fx.js"></script>
+  <script src="assets/js/scenes.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

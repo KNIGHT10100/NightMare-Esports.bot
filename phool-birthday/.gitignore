@@ -1,0 +1,8 @@
+# This repository is public, so personal files stay on your own computer.
+assets/photos/*
+!assets/photos/README.md
+assets/audio/*
+!assets/audio/README.md
+
+# Output of tools/build.mjs (contains your photos once built)
+dist/
