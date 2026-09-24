@@ -163,6 +163,9 @@
   // (pointerup/touchend/click/keydown are the events browsers accept for that).
   const firstTouch = (e) => {
     if (e.type === 'keydown' && (e.ctrlKey || e.metaKey || e.altKey)) return;
+    // Browsers differ on which of these events count as a real touch (iPhones trust touchend and
+    // click most), so every one of them makes sure sound is switched on.
+    P.audio.unlock();
     if (!P.state.started) P.start();
     else P.audio.retrySong();
   };
